@@ -1,0 +1,62 @@
+[
+  {
+    "path": "N:\\Game\\Persona 3 Reload\\Soundtrack\\P3R_Soundtrack\\Binaries\\Win64\\P3R_Soundtrack.exe",
+    "bytes": 80962560,
+    "sha256": "e749f9b8e5a42d0b8757292a2a13d27a84351177b6c116a25739adc943196946"
+  },
+  {
+    "path": "N:\\Game\\Persona 3 Reload\\Soundtrack\\P3R_Soundtrack\\Content\\Paks\\global.ucas",
+    "bytes": 1048512,
+    "sha256": "75a968ecb93a63b595846b98d52764a41b422e55e3dd233f43d5a12325d90ee8"
+  },
+  {
+    "path": "N:\\Game\\Persona 3 Reload\\Soundtrack\\P3R_Soundtrack\\Content\\Paks\\global.utoc",
+    "bytes": 381,
+    "sha256": "d1384c5e22e536360ef541412436a3d3f86a7a94c2599ca34e597e2d1c7bed7e"
+  },
+  {
+    "path": "N:\\Game\\Persona 3 Reload\\Soundtrack\\P3R_Soundtrack\\Content\\Paks\\pakchunk0-WindowsNoEditor.pak",
+    "bytes": 40844335,
+    "sha256": "90fc8fd446110e004504f3fdcf4a3250e95a9625e89818a1d37a5cdd5a362246"
+  },
+  {
+    "path": "N:\\Game\\Persona 3 Reload\\Soundtrack\\P3R_Soundtrack\\Content\\Paks\\pakchunk0-WindowsNoEditor.ucas",
+    "bytes": 357448608,
+    "sha256": "e0121a3d5bf04ac8b49d566a0c1451ee5a378dc56f4dc52e55762e25075655ab"
+  },
+  {
+    "path": "N:\\Game\\Persona 3 Reload\\Soundtrack\\P3R_Soundtrack\\Content\\Paks\\pakchunk0-WindowsNoEditor.utoc",
+    "bytes": 141949,
+    "sha256": "070268bd69d1c1aab96b5e25fd18c79e5d381371128b377c18a17dad72bd2d8f"
+  },
+  {
+    "path": "N:\\Game\\Persona 3 Reload\\Artbook\\P3R_Artbook\\Binaries\\Win64\\P3R_Artbook.exe",
+    "bytes": 80962560,
+    "sha256": "1362369afdcbefa68344690e9854d66227fb4c19931c52d0c1ca6da687221b6b"
+  },
+  {
+    "path": "N:\\Game\\Persona 3 Reload\\Artbook\\P3R_Artbook\\Content\\Paks\\global.ucas",
+    "bytes": 1048512,
+    "sha256": "75a968ecb93a63b595846b98d52764a41b422e55e3dd233f43d5a12325d90ee8"
+  },
+  {
+    "path": "N:\\Game\\Persona 3 Reload\\Artbook\\P3R_Artbook\\Content\\Paks\\global.utoc",
+    "bytes": 381,
+    "sha256": "d1384c5e22e536360ef541412436a3d3f86a7a94c2599ca34e597e2d1c7bed7e"
+  },
+  {
+    "path": "N:\\Game\\Persona 3 Reload\\Artbook\\P3R_Artbook\\Content\\Paks\\pakchunk0-WindowsNoEditor.pak",
+    "bytes": 40885099,
+    "sha256": "bd808847d57e7ec02e42dde7e53ed0a74425a424b39abf79fc7fc888948c6892"
+  },
+  {
+    "path": "N:\\Game\\Persona 3 Reload\\Artbook\\P3R_Artbook\\Content\\Paks\\pakchunk0-WindowsNoEditor.ucas",
+    "bytes": 357448608,
+    "sha256": "e0121a3d5bf04ac8b49d566a0c1451ee5a378dc56f4dc52e55762e25075655ab"
+  },
+  {
+    "path": "N:\\Game\\Persona 3 Reload\\Artbook\\P3R_Artbook\\Content\\Paks\\pakchunk0-WindowsNoEditor.utoc",
+    "bytes": 141946,
+    "sha256": "5b7c2d7c4a26c47d6448d43b5145c49603f4b0a505843869eec2f976b6d8d44a"
+  }
+]

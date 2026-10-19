@@ -1,22 +1,32 @@
-// Original feedback tones. This module is requested only after sound opt-in.
-let context: AudioContext | undefined;
-let lastPlayed = 0;
-export async function playTone(kind: 'select' | 'confirm') {
-  if (performance.now() - lastPlayed < 75) return;
-  lastPlayed = performance.now();
-  context ??= new AudioContext();
-  if (context.state !== 'running') await context.resume();
-  const start = context.currentTime;
-  const oscillator = context.createOscillator();
-  const envelope = context.createGain();
-  oscillator.type = 'sine';
-  oscillator.frequency.setValueAtTime(kind === 'confirm' ? 660 : 520, start);
-  oscillator.frequency.exponentialRampToValueAtTime(kind === 'confirm' ? 990 : 780, start + .065);
-  envelope.gain.setValueAtTime(.0001, start);
-  envelope.gain.exponentialRampToValueAtTime(.035, start + .008);
-  envelope.gain.exponentialRampToValueAtTime(.0001, start + .095);
-  oscillator.connect(envelope).connect(context.destination);
-  oscillator.start(start);
-  oscillator.stop(start + .1);
-  oscillator.onended=()=>{ oscillator.disconnect(); envelope.disconnect(); };
+// Actual game UI samples. No audio is fetched/decoded before visitor opt-in.
+type Kind='select'|'confirm'|'back'|'page'|'open';
+const sources:Record<Kind,string>={select:'/persona/cursor.wav',confirm:'/persona/decision.wav',back:'/persona/cancel.wav',page:'/persona/page.wav',open:'/persona/menu.wav'};
+let context:AudioContext|undefined;
+let lastPlayed=0;
+let generation=0;
+const buffers=new Map<string,Promise<AudioBuffer>>();
+let playing:AudioBufferSourceNode|undefined;
+export async function playTone(kind:Kind) {
+  if(performance.now()-lastPlayed<65) return;
+  lastPlayed=performance.now();
+  const ticket=++generation;
+  context??=new AudioContext();
+  if(context.state!=='running') await context.resume();
+  const audioContext=context;
+  const path=sources[kind];
+  if(!buffers.has(path)) buffers.set(path,fetch(path).then(response=>{
+    if(!response.ok) throw new Error('Interface sound unavailable');
+    return response.arrayBuffer();
+  }).then(bytes=>audioContext.decodeAudioData(bytes)));
+  const buffer=await buffers.get(path)!;
+  if(ticket!==generation) return;
+  playing?.stop();
+  const sample=audioContext.createBufferSource();
+  const volume=audioContext.createGain();
+  volume.gain.value=.24;
+  sample.buffer=buffer;sample.connect(volume).connect(audioContext.destination);
+  sample.onended=()=>{sample.disconnect();volume.disconnect();if(playing===sample) playing=undefined;};
+  playing=sample;sample.start();
 }
+
+export function stopSounds(){generation++;try{playing?.stop();}catch{}playing=undefined;}

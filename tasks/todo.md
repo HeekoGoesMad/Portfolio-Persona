@@ -4,7 +4,7 @@ Status is updated from verification evidence, not elapsed effort.
 
 ## Task 1: Establish project records
 
-- [ ] Complete
+- [x] Complete
 
 **Description:** Save the approved plan, task checklist and project conventions without overwriting existing work.
 
@@ -20,7 +20,7 @@ Status is updated from verification evidence, not elapsed effort.
 
 ## Task 2: Measure reference behavior
 
-- [ ] Complete
+- [x] Complete
 
 **Description:** Record observed UI states, sampled transitions and uncertainty from the supplied recordings.
 
@@ -36,7 +36,7 @@ Status is updated from verification evidence, not elapsed effort.
 
 ## Task 3: Bootstrap the content-driven site
 
-- [ ] Complete
+- [x] Complete
 
 **Description:** Configure the static application, validated content and repeatable commands.
 
@@ -52,11 +52,11 @@ Status is updated from verification evidence, not elapsed effort.
 
 ## Checkpoint A
 
-- [ ] Evidence reviewed; appropriate checks/build pass; core flow verified; limitations recorded.
+- [x] Evidence reviewed; appropriate checks/build pass; core flow verified; limitations recorded.
 
 ## Task 4: Deliver the landing menu
 
-- [ ] Complete
+- [x] Complete
 
 **Description:** Implement the original responsive landing composition and immediate project navigation.
 
@@ -72,7 +72,7 @@ Status is updated from verification evidence, not elapsed effort.
 
 ## Task 5: Deliver project discovery
 
-- [ ] Complete
+- [x] Complete
 
 **Description:** Provide a selectable project index with preview and URL-based technology filters.
 
@@ -88,7 +88,7 @@ Status is updated from verification evidence, not elapsed effort.
 
 ## Task 6: Deliver case studies
 
-- [ ] Complete
+- [x] Complete
 
 **Description:** Render readable full Markdown articles and section-anchor navigation.
 
@@ -104,11 +104,11 @@ Status is updated from verification evidence, not elapsed effort.
 
 ## Checkpoint B
 
-- [ ] Evidence reviewed; appropriate checks/build pass; core flow verified; limitations recorded.
+- [x] Evidence reviewed; appropriate checks/build pass; core flow verified; limitations recorded.
 
 ## Task 7: Deliver profile and contact
 
-- [ ] Complete
+- [x] Complete
 
 **Description:** Expose editable identity, skills and contact links without invented personal facts.
 
@@ -124,7 +124,7 @@ Status is updated from verification evidence, not elapsed effort.
 
 ## Task 8: Implement the motion system
 
-- [ ] Complete
+- [x] Complete
 
 **Description:** Share short transition tokens and robust route lifecycle behavior.
 
@@ -140,7 +140,7 @@ Status is updated from verification evidence, not elapsed effort.
 
 ## Task 9: Implement sound preferences
 
-- [ ] Complete
+- [x] Complete
 
 **Description:** Add short original opt-in interface feedback with persistent settings.
 
@@ -156,11 +156,11 @@ Status is updated from verification evidence, not elapsed effort.
 
 ## Checkpoint C
 
-- [ ] Evidence reviewed; appropriate checks/build pass; core flow verified; limitations recorded.
+- [x] Evidence reviewed; appropriate checks/build pass; core flow verified; limitations recorded.
 
 ## Task 10: Verify and optimize
 
-- [ ] Complete
+- [x] Complete
 
 **Description:** Resolve observed browser, responsive, accessibility and loading problems; complete metadata/recovery.
 
@@ -176,7 +176,7 @@ Status is updated from verification evidence, not elapsed effort.
 
 ## Task 11: Complete maintenance handoff
 
-- [ ] Complete
+- [x] Complete
 
 **Description:** Document content editing, theme changes, upgrades, deployment and rollback.
 
@@ -192,4 +192,15 @@ Status is updated from verification evidence, not elapsed effort.
 
 ## Delivery checkpoint
 
-- [ ] All implemented behavior verified; remaining content/publishing actions explicitly handed off.
+- [x] All implemented behavior verified; remaining content/publishing actions explicitly handed off.
+
+## Persona revision delivery
+
+- [x] Recovered material and provenance integrated.
+- [x] Game screen composition and reviewed motion implemented.
+- [x] Actual menu effects and opt-in two-track player verified.
+- [x]51 full browser checks plus12 affected follow-up checks passed.
+- [x] Content maintenance rehearsal completed; no temporary content remains.
+- [x] Local mobile performance/accessibility targets met.
+
+Remaining owner actions:replace sample content and contact/résumé details. Live screen-reader speech, physical-device review and publication are explicitly not claimed.

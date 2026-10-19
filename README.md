@@ -1,6 +1,6 @@
 # Personal Portfolio / Persona-inspired
 
-A static, content-driven portfolio for a frontend / creative developer. Original blue silhouette artwork, angled menus, short page transitions, readable Markdown case studies and optional original interface sounds.
+A static, content-driven portfolio for a frontend / creative developer. Actual recovered Persona artwork, a classroom scene from the supplied recording, clustered angled menus, staged screen transitions, readable Markdown case studies, original game menu effects and an opt-in two-track soundtrack.
 
 The three projects and the profile are visibly marked examples. Add your own work and contact details before publishing.
 
@@ -14,7 +14,7 @@ npm ci
 npm run dev
 ```
 
-Open the printed local URL, normally `http://127.0.0.1:4321/`. To stop, press Ctrl+C in that terminal.
+Or double-click `Start-Portfolio.cmd`. Open the printed local URL, normally `http://127.0.0.1:4321/`. To stop, press Ctrl+C in that terminal.
 
 For the production build:
 
@@ -53,7 +53,8 @@ The browser suite starts a local production preview when one is not already runn
 - `docs/design-contract.md`: visual/interaction rules and motion tokens.
 - `docs/maintenance.md`: content editing, theme changes, dependencies and safe updates.
 - `docs/deployment.md`: static hosting, domain/metadata preparation and rollback.
-- `docs/assets.md`: original artwork, font licenses and audio provenance.
+- `docs/assets.md` and `docs/persona-assets.md`: asset provenance, original source hashes and recovery boundaries.
+- `docs/animation-review.md` and `plans/`: reviewed motion findings and the implemented changes.
 - `docs/verification.md`: actual results and remaining verification limits.
 
-This is an independent portfolio inspired by Persona's interface language. It includes no extracted game artwork, code, soundtrack or character assets.
+This local revision includes user-requested game-derived artwork, original menu effects and soundtrack selections. It is an independent personal portfolio. Asset recovery and source hashes are documented, and the original game installation is unchanged. Nothing has been published.

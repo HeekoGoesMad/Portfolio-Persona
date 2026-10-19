@@ -1,0 +1,14 @@
+[
+  {
+    "asset": "Booklet/UI/Texture/T_UI_Booklet_Title_Chara.uexp",
+    "same_sha256_in_both_containers": true
+  },
+  {
+    "asset": "Booklet/UI/Texture/Book/T_UI_Booklet_page_13.uexp",
+    "same_sha256_in_both_containers": true
+  },
+  {
+    "asset": "Booklet/UI/Texture/Book/T_UI_Booklet_page_11.uexp",
+    "same_sha256_in_both_containers": true
+  }
+]

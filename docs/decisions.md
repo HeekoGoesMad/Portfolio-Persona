@@ -11,3 +11,8 @@ No account, server, tracking or contact submission service. Sound and motion pre
 
 ## 2026-10-19: Browser findings corrected
 Native preference controls remain actual checkboxes; their decorative capsule layer must not intercept pointer input. On a direct/reloaded hash route, wait for fonts then position the actual section so initial layout and client-router restoration do not lose the target. Decorative footer words are artwork rather than low-contrast reading content. Mobile artwork starts below the identity copy.
+
+##2026-10-19: Stronger Persona revision
+The user explicitly replaced the original-art-only/no-music direction with a request for actual Persona backgrounds, sounds, soundtrack and artbook material. Keep source hashes and recovery limits. Main bonus-app IoStore payloads were unencrypted; one shared payload includes the recovered music/UI sounds/artwork, and selected Artbook payloads were independently compared. Shared scene is persistent; native routes and readable content remain. Game-derived media are local assets, not ongoing reads of the installation.
+
+The first verified foundation is preserved at Git4ed489b. A later animation audit removes keyboard preview travel, keeps the scene still during screen changes, gates moving hover behavior, and adds40ms menu stagger. A420ms decorative character entrance is a documented occasional-composition choice and never blocks inputs. Screen transitions use280ms/120ms. The classroom loop is optional movement and pauses under reduction.

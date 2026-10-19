@@ -1,9 +1,16 @@
 # Asset provenance
 
-All SVG artwork in `public/art/` was created for this portfolio: geometric silhouette scene, three conceptual project covers, share card and favicon. They are original graphic illustrations, not recovered Persona assets, screenshots of working products, or depictions of the owner. The project examples are fictional content templates.
+## Current local Persona scene
+The user explicitly requested actual Persona material on2026-10-19. Runtime material under public/persona includes recovered protagonist artwork, selected artbook pages, original menu effects, and two soundtrack selections. Exact sources, hashes, tools, decoding/transcoding, and limits are in docs/persona-assets.md, persona-source-hashes.json and persona-artbook-comparison.json.
 
-Fonts: Barlow Condensed and DM Sans, self-hosted through pinned `@fontsource` packages. Their OFL license files ship in the packages. Keep those packages/license information when redistributing the source.
+The classroom background uses the supplied screenshot as its still fallback and an isolated silent region of the supplied recording as a short loop. It is not an exported Unreal background texture. Screen/mask/menu animations are a web reconstruction informed by recorded frames; no original engine curves or menu code were recovered.
 
-Audio: synthesized locally by Web Audio using short oscillators and envelopes after visitor opt-in. No soundtrack, sampled game effects or remote audio files.
+Music choices: Iwatodai Dorm -Reload- and Color Your Night. Both start only after user opt-in. Sound effects are original Cursor/Decision/Cancel/Page/Menu samples; no synthesized substitute remains in the current UI. The original sources remain unchanged and the website has not been published.
 
-The Persona 3 Reload recordings and executable are analysis references only. No game files, fonts, characters, audio or video are included in the runtime website. Persona is the reference named by the user, not a claim of official affiliation.
+## Original portfolio artwork
+SVG assets under public/art were created for this project. The three example project covers are conceptual graphic artwork, not screenshots of working applications. The original abstract signal illustration remains an optional fallback asset. Example projects are fictional content templates.
+
+## Fonts
+Barlow Condensed and DM Sans are self-hosted through pinned @fontsource packages. OFL notices are copied into public/licenses so notices travel with the static build. Preserve them when redistributing the source/output.
+
+Persona assets are thematic material, not a portrait of the portfolio owner or evidence of their project achievements. The profile and project examples remain explicitly marked.

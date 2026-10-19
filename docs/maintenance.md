@@ -53,11 +53,11 @@ Run `npm run check` and `npm run build`. Visit the new direct route and the proj
 
 ## Change the visual system
 
-The top of `src/styles/global.css` defines palette, typography, spacing-related layout, layer and motion tokens. Use the display font for headings and upright DM Sans for reading. Maintain normal-text contrast >=4.5:1 and large-text contrast >=3:1.
+The shared content rules live in `src/styles/global.css`; the current game-scene layer and overriding palette/motion tokens live in `src/styles/persona.css`. Edit the current tokens in persona.css rather than introducing a third override layer. Use the display font for headings and upright DM Sans for reading. Maintain normal-text contrast >=4.5:1 and large-text contrast >=3:1.
 
-Motion tokens: selection120ms, panels240ms, pages360ms. Selection should remain immediate. The preview controller uses the same panel duration from CSS. Retain the reduced-motion media query and explicit reduction selector. Avoid long blocking transitions and perpetual animation. Original illustration lives in `public/art/signal.svg`; replace it with your own art without changing the alt/decorative semantics.
+Motion tokens: selection120ms, panels240ms, pages280ms. Selection should remain immediate. The preview controller uses the same panel duration from CSS. Retain the reduced-motion media query and explicit reduction selector. Avoid long blocking transitions and perpetual animation. The current scene assets and two tracks are selected in src/data/persona.ts. public/persona/protagonist.png is recovered game artwork; public/art/signal.svg is the original fallback. Keep decorative semantics and source provenance when replacing them.
 
-Preferences are local to the visitor's browser. System reduced motion is always honored, even if the explicit reduction switch is off. Sound defaults to off, is loaded after opt-in, and never supplies essential feedback. If browser storage is unavailable, current-session controls still work.
+Preferences are local to the visitor's browser. System reduced motion is always honored, even if the explicit reduction switch is off. Sound defaults to off, is loaded after opt-in, and never supplies essential feedback. Music is a separate opt-in player that continues through client navigation and stops on reload unless the visitor explicitly starts it again. Config provides two soundtrack choices. The silent classroom loop pauses under system or explicit reduced motion. If browser storage is unavailable, current-session controls still work.
 
 ## Update dependencies safely
 

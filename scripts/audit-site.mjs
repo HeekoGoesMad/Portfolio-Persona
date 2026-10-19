@@ -10,6 +10,7 @@ try {
     const result=await lighthouse(`http://127.0.0.1:4321${route}`,{port:chrome.port,output:'html',onlyCategories:['performance','accessibility','best-practices','seo']});
     const name=route==='/'?'home':route.split('/').filter(Boolean).join('-');
     await writeFile(`reports/lighthouse-${name}.html`,result.report);
+    await writeFile(`reports/lighthouse-${name}.json`,JSON.stringify(result.lhr));
     const scores=Object.fromEntries(Object.entries(result.lhr.categories).map(([key,value])=>[key,Math.round(value.score*100)]));
     results.push({route,...scores,LCP:result.lhr.audits['largest-contentful-paint'].displayValue,CLS:result.lhr.audits['cumulative-layout-shift'].displayValue});
   }

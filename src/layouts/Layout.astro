@@ -6,6 +6,8 @@ import '@fontsource/dm-sans/400.css';
 import '@fontsource/dm-sans/500.css';
 import '@fontsource/dm-sans/600.css';
 import '../styles/global.css';
+import '../styles/persona.css';
+import { persona } from '../data/persona';
 import { profile } from '../data/profile';
 interface Props { title: string; description?: string; section?: string; home?: boolean; }
 const { title, description = profile.introduction, section='Portfolio', home=false } = Astro.props;
@@ -35,15 +37,16 @@ const nav=[['Projects','/projects/'],['About','/about/'],['Contact','/contact/']
     </script>
     {section !== 'Lost signal' && <ClientRouter fallback="none" />}
   </head>
-  <body class:list={[{ 'is-home': home }]}>
+  <body class:list={['persona-shell', { 'is-home': home }]}><div class="game-scene" aria-hidden="true" transition:persist="classroom-scene"><img src={persona.background} alt="" width="1280" height="720" /><video class="classroom-video" poster={persona.background} data-scene-video muted loop playsinline preload="none"><source src="/persona/classroom-loop.mp4" type="video/mp4" /></video><div class="game-scene-tint"></div><div class="game-water-light"></div></div><audio id="persona-music" src={persona.music} preload="none" loop aria-hidden="true" transition:persist="persona-music"></audio>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
-      <a class="brand" href="/" aria-label="Portfolio home"><span class="brand-symbol" aria-hidden="true">P/</span><span>PERSONAL<br /><strong>PORTFOLIO</strong></span></a>
+      <a class="brand" href="/" aria-label="Personal portfolio home"><span class="brand-symbol" aria-hidden="true">P/</span><span>PERSONAL<br /><strong>PORTFOLIO</strong></span></a>
       <nav class="desktop-nav" aria-label="Main navigation">
         {nav.map(([label,href])=><a href={href} aria-current={path.startsWith(href!) ? 'page' : undefined}>{label}</a>)}
         {profile.resume && <a href={profile.resume}>Résumé <span aria-hidden="true">↗</span></a>}
       </nav>
       <div class="header-controls">
+        <button type="button" class="music-button js-only" data-music-toggle aria-pressed="false" aria-label="Music: off"><span aria-hidden="true">♫</span> <span data-music-label>MUSIC OFF</span></button>
         <button type="button" class="sound-button js-only" data-sound-toggle aria-pressed="false" aria-label="Sound: off"><span class="sound-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span data-sound-label>SOUND OFF</span></button>
         <button type="button" class="settings-button js-only" data-settings-open>Settings <span aria-hidden="true">+</span></button>
         <button type="button" class="mobile-menu-button js-only" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu">Menu <span aria-hidden="true">+</span></button>
@@ -55,7 +58,7 @@ const nav=[['Projects','/projects/'],['About','/about/'],['Contact','/contact/']
       </nav>
       <noscript><nav class="noscript-nav" aria-label="Mobile navigation">{nav.map(([label,href])=><a href={href}>{label}</a>)}</nav></noscript>
     </header>
-    <main id="main" tabindex="-1"><slot /></main>
+    <main id="main" tabindex="-1" transition:name="screen-content"><slot /></main>
     <footer class="site-footer">
       <svg class="footer-title" viewBox="0 0 1600 230" preserveAspectRatio="xMinYMin meet" aria-hidden="true" focusable="false"><text x="0" y="205">{section}</text></svg>
       <div class="footer-content"><p>{profile.name}<span class="footer-divider">/</span>{profile.role}</p><div><span class="key-hint">{home || section==='Projects' ? <><kbd>↑</kbd><kbd>↓</kbd></> : <kbd>Tab</kbd>} Navigate <kbd>↵</kbd> Select</span><a href="#main">Back to top ↑</a></div></div>
@@ -64,9 +67,11 @@ const nav=[['Projects','/projects/'],['About','/about/'],['Contact','/contact/']
     <dialog class="settings-dialog" aria-labelledby="settings-title">
       <div class="dialog-heading"><p class="eyebrow">Make yourself comfortable</p><button type="button" data-settings-close aria-label="Close settings">Close ×</button></div>
       <h2 id="settings-title">CONFIG</h2>
-      <label class="setting-row"><span><strong>Interface sounds</strong><small>Short feedback when you select or confirm.</small></span><input type="checkbox" data-sound-input /><span class="toggle" aria-hidden="true"></span></label>
+      <label class="setting-row"><span><strong>Interface sounds</strong><small>Original Persona cursor, confirm and back sounds.</small></span><input type="checkbox" data-sound-input /><span class="toggle" aria-hidden="true"></span></label>
       <label class="setting-row"><span><strong>Reduce motion</strong><small>Your system preference is always respected.</small></span><input type="checkbox" data-motion-input /><span class="toggle" aria-hidden="true"></span></label>
-      <p class="settings-note">Preferences stay in this browser. Audio starts only after you turn it on.</p>
+      <label class="setting-row"><span><strong>Soundtrack</strong><small>Persona 3 Reload music. Play only when you choose.</small></span><input type="checkbox" data-music-input /><span class="toggle" aria-hidden="true"></span></label>
+      <label class="music-track-label" for="soundtrack-track">Soundtrack selection</label><select id="soundtrack-track" data-music-track>{persona.tracks.map(track=><option value={track.src}>{track.name}</option>)}</select>
+      <p class="settings-note">Sound and motion preferences stay in this browser. Music starts only after you choose Play.</p>
     </dialog>
     <script>import '../scripts/site';</script>
   </body>

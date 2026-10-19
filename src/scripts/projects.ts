@@ -52,8 +52,13 @@ function initializeProjects() {
   };
   const preview=(event:Event)=>{
     const target=event.target instanceof Element?event.target:null;
+    if(event.type==='click' && target?.closest('[data-reset-filter]')) {
+      event.preventDefault();
+      const url=new URL(location.href);url.searchParams.delete('tech');
+      history.pushState(history.state,'',url);applyFilter();filter!.focus();return;
+    }
     const row=target?.closest<HTMLElement>('[data-project-row]');
-    if(row && !row.hidden) select(row.dataset.projectId||'',true);
+    if(row && !row.hidden) select(row.dataset.projectId||'',event.type==='click' && document.documentElement.dataset.input!=='keyboard');
   };
   filter.addEventListener('change',change);
   browser.addEventListener('click',preview);

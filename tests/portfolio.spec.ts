@@ -4,7 +4,7 @@ import AxeBuilder from '@axe-core/playwright';
 test('home menu supports keyboard and route focus',async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('/');
-  await expect(page.getByRole('heading',{level:1})).toContainText('THINK.');
+  await expect(page.getByRole('heading',{level:1})).toContainText('Personal projects');
   const menu=page.getByRole('navigation',{name:'Explore the portfolio'});
   await menu.getByRole('link',{name:/PROJECTS/}).focus();
   await page.keyboard.press('ArrowDown');
@@ -90,7 +90,7 @@ test('preferences persist and sound stays opt-in',async({page})=>{
 test('system reduced motion prevents entry animation',async({page})=>{
   await page.emulateMedia({reducedMotion:'reduce'});
   await page.goto('/');
-  const animation=await page.locator('.hero-intro').evaluate(el=>getComputedStyle(el).animationName);
+  const animation=await page.locator('.persona-portrait').evaluate(el=>getComputedStyle(el).animationName);
   expect(animation).toBe('none');
   await page.getByRole('navigation',{name:'Explore the portfolio'}).getByRole('link',{name:/PROJECTS/}).click();
   await expect(page).toHaveURL(/\/projects\/$/);
@@ -171,7 +171,7 @@ test('pages meet automated WCAG AA rules and load without errors',async({page})=
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
   for(const route of ['/','/projects/','/projects/afterhours/','/about/','/contact/','/404.html']) {
     await page.goto(route);
-    await page.evaluate(async()=>{await document.fonts.ready;await Promise.all(document.getAnimations().map(a=>a.finished.catch(()=>{})));});
+    await page.evaluate(async()=>{await document.fonts.ready;await Promise.all(document.getAnimations().filter(a=>a.effect?.getComputedTiming().iterations!==Infinity).map(a=>a.finished.catch(()=>{})));});
     const results=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
     expect(results.violations,route).toEqual([]);
   }
@@ -185,4 +185,33 @@ test('sitemap, robots and recovery route match local example state',async({reque
   await page.goto('/404.html');
   await page.getByRole('link',{name:/Find a project/}).click();
   await expect(page).toHaveURL(/\/projects\/$/);
+});
+
+
+test('actual soundtrack is opt-in and survives navigation',async({page})=>{
+  await page.goto('/');
+  expect(await page.locator('#persona-music').evaluate((audio:HTMLAudioElement)=>audio.paused)).toBe(true);
+  await page.getByRole('button',{name:'Music: off'}).click();
+  await expect(page.getByRole('button',{name:'Music: on'})).toHaveAttribute('aria-pressed','true');
+  await expect.poll(()=>page.locator('#persona-music').evaluate((audio:HTMLAudioElement)=>audio.paused)).toBe(false);
+  await page.getByRole('navigation',{name:'Explore the portfolio'}).getByRole('link',{name:'ABOUT',exact:true}).click();
+  await expect(page).toHaveURL(/\/about\/$/);
+  await expect(page.getByRole('button',{name:'Music: on'})).toBeVisible();
+  expect(await page.locator('#persona-music').evaluate((audio:HTMLAudioElement)=>audio.paused)).toBe(false);
+  await page.getByRole('button',{name:'Settings',exact:true}).click();
+  await page.getByLabel('Soundtrack selection').selectOption('/persona/color-your-night.mp3');
+  await expect.poll(()=>page.locator('#persona-music').evaluate((audio:HTMLAudioElement)=>audio.currentSrc)).toContain('color-your-night.mp3');
+  await page.keyboard.press('Escape');
+  await page.getByRole('button',{name:'Music: on'}).click();
+  expect(await page.locator('#persona-music').evaluate((audio:HTMLAudioElement)=>audio.paused)).toBe(true);
+});
+
+test('keyboard menu selection stays immediate and background respects reduction',async({page})=>{
+  await page.goto('/');
+  const menu=page.getByRole('navigation',{name:'Explore the portfolio'});
+  await menu.getByRole('link',{name:/PROJECTS/}).focus();
+  await page.keyboard.press('ArrowDown');
+  expect(await menu.getByRole('link',{name:'ABOUT',exact:true}).evaluate(el=>getComputedStyle(el).animationName)).toBe('none');
+  await page.emulateMedia({reducedMotion:'reduce'});
+  await expect.poll(()=>page.locator('[data-scene-video]').evaluate((video:HTMLVideoElement)=>video.paused)).toBe(true);
 });

@@ -1,10 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { profile } from '../data/profile';
+import { persona } from '../data/persona';
 ---
 <Layout title="About" section="Profile">
   <section class="about-page page-width">
     <div class="page-heading" data-enter><p class="eyebrow">The person behind the projects</p><h1>A LITTLE<br /><span>ABOUT ME.</span></h1></div>
-    <div class="about-grid"><div class="profile-art" aria-hidden="true"><img src="/art/signal.svg" alt="" width="800" height="880" /><span>ALWAYS<br />CURIOUS.</span></div><div class="about-copy"><p class="eyebrow">{profile.role}</p><h2>{profile.name}</h2><p class="large-copy">{profile.introduction}</p><p>{profile.biography}</p>{profile.example && <p class="inline-notice">Example profile. Replace this introduction, biography, and skills with your real background.</p>}<h3>What I work with</h3><ul class="skills-list">{profile.skills.map(s=><li>{s}</li>)}</ul><div class="about-actions">{profile.resume && <a class="action-link" href={profile.resume}>Read my résumé ↗</a>}<a class="text-link" href="/contact/">Get in touch ↗</a></div></div></div>
+    <div class="about-grid"><div class="profile-art" aria-hidden="true"><img src={persona.portrait} srcset="/persona/protagonist-768.webp 768w, /persona/protagonist-1280.webp 1280w" sizes="(max-width:767px) 90vw,42vw" alt="" width="800" height="880" /></div><div class="about-copy"><p class="eyebrow">{profile.role}</p><h2>{profile.name}</h2><p class="large-copy">{profile.introduction}</p><p>{profile.biography}</p>{profile.example && <p class="inline-notice">Example profile. Replace this introduction, biography, and skills with your real background.</p>}<h3>What I work with</h3><ul class="skills-list">{profile.skills.map(s=><li>{s}</li>)}</ul><div class="about-actions">{profile.resume && <a class="action-link" href={profile.resume}>Read my résumé ↗</a>}<a class="text-link" href="/contact/">Get in touch ↗</a></div></div></div>
   </section>
 </Layout>

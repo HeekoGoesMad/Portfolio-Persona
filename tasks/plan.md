@@ -49,3 +49,6 @@ Each task is a focused slice, normally no more than five source/document files. 
 
 ## Defaults and risks
 English initially. No invented biography, achievements, employers or real-project results. No accounts, CMS, backend, analytics, controller support or music. Public hosting/domain is a later phase. Retain original/licensed asset provenance and concise design decisions. Missing real profile data stays visibly editable; examples never pass as real work. Unobserved input behavior and animation internals remain explicit unknowns. Runtime/tool failures are reported, not converted into successful checks.
+
+## Authorized visual revision,2026-10-19
+The user requested stronger Persona resemblance with the game's actual backgrounds, animation, sounds, soundtrack and artbook material. This supersedes the original-art-only/no-music defaults for this local deliverable. Preserve the initial verified foundation in Git4ed489b. Use recovered assets and the supplied screenshots, record provenance and exact recovery limits, keep playback opt-in, and keep the project local. Apply the review-animations and improve-animations audit to keyboard frequency, shared scene continuity, pointer gating and staged entrances. Re-run affected browser and accessibility checks.

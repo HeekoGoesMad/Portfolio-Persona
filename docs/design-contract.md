@@ -14,3 +14,6 @@ Reading: recruiter-facing developer portfolio, Reload-led kinetic typography and
 - Reduced motion: system reduction is always respected. User can request additional reduction. No looping animation, scroll hijacking, cursor replacement or forced intro.
 - Original illustration is a geometric faceless silhouette, not a portrait or a game character. Example project covers are conceptual graphic artwork, not product screenshots.
 - Keep English sample content explicit. Do not invent real achievements, contacts or résumé material.
+
+## Current Persona revision
+The newer user direction takes precedence over the initial original-art-only composition. Use an actual recovered protagonist portrait, a white diagonal foreground field, large cropped page lettering, a clustered slanted menu and screenshot/video-derived watery classroom backdrop. Project screens use active white rows; profile/case headers use diagonal stat-sheet framing. Keep the background persistent while screen content moves, provide original menu sounds and opt-in soundtrack choices, and keep personal facts distinct from thematic game imagery. Current overriding tokens and screen rules are in src/styles/persona.css.
