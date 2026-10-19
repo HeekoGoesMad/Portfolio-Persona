@@ -1,0 +1,29 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Scene from '../components/Scene.astro';
+import { profile } from '../data/profile';
+import { getProjects } from '../lib/projects';
+const projects = await getProjects();
+const featured = projects.find(p=>p.data.featured) || projects[0];
+---
+<Layout title="Creative developer portfolio" section="Portfolio" home>
+  <section class="home-hero" aria-labelledby="home-title">
+    <div class="hero-backword" aria-hidden="true">CREATE</div>
+    <div class="hero-intro" data-enter>
+      <p class="eyebrow"><span class="small-slash" aria-hidden="true"></span> {profile.role}</p>
+      <h1 id="home-title">THINK.<br />MAKE.<br /><span>REPEAT.</span></h1>
+      <div class="hero-identity"><span class="identity-line"></span><p><strong>{profile.name}</strong><br />{profile.introduction}</p></div>
+    </div>
+    <Scene />
+    <nav class="hero-menu" aria-label="Explore the portfolio" data-key-list data-enter>
+      <a href="/projects/" class="hero-menu-link is-highlighted"><span class="menu-index" aria-hidden="true">01</span><span>PROJECTS</span><span class="menu-arrow" aria-hidden="true">↗</span><small>Explore the work</small></a>
+      <a href="/about/" class="hero-menu-link"><span class="menu-index" aria-hidden="true">02</span><span>ABOUT</span><span class="menu-arrow" aria-hidden="true">↗</span></a>
+      <a href="/contact/" class="hero-menu-link"><span class="menu-index" aria-hidden="true">03</span><span>CONTACT</span><span class="menu-arrow" aria-hidden="true">↗</span></a>
+    </nav>
+    <div class="hero-side-label" aria-hidden="true">PERSONAL<br /><strong>PROJECTS</strong></div>
+  </section>
+  {featured && <section class="featured-section page-width" aria-labelledby="featured-title">
+    <div class="section-heading"><div><p class="eyebrow">From the project collection</p><h2 id="featured-title">IN FOCUS</h2></div><a class="text-link" href="/projects/">All projects <span aria-hidden="true">↗</span></a></div>
+    <a class="featured-link" href={`/projects/${featured.id}/`}><div class="featured-art"><img src={featured.data.thumbnail || '/art/share.svg'} alt={featured.data.thumbnailAlt || 'Project artwork'} width="1200" height="720" loading="lazy" /></div><div class="featured-copy">{featured.data.example && <span class="example-tag">Example project</span>}<p class="eyebrow">{featured.data.category}</p><h3>{featured.data.title}</h3><p>{featured.data.summary}</p><span class="text-link">Open case study <span aria-hidden="true">↗</span></span></div></a>
+  </section>}
+</Layout>

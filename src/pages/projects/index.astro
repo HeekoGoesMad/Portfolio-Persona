@@ -1,0 +1,29 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getProjects } from '../../lib/projects';
+const projects=await getProjects();
+const technologies=[...new Set(projects.flatMap(p=>p.data.technologies))].sort();
+const first=projects[0];
+---
+<Layout title="Projects" section="Projects" description="A collection of web projects, interface experiments, and creative development case studies.">
+  <section class="page-width projects-page" data-project-browser>
+    <div class="page-heading" data-enter><p class="eyebrow">Things made with intention</p><h1>THE PROJECT<br /><span>COLLECTION.</span></h1><p>Experiments in how things look, feel, and work.</p></div>
+    <div class="project-toolbar"><label for="technology">Filter by technology</label><select id="technology" name="tech" data-filter><option value="">All technologies</option>{technologies.map(t=><option value={t}>{t}</option>)}</select><span class="project-count" aria-live="polite" data-project-count>{projects.length} projects</span></div>
+    <noscript><p class="inline-notice">All projects are shown. Enable JavaScript to filter or change the preview.</p></noscript>
+    <div class="project-browser">
+      <div class="project-list" data-key-list aria-label="Project collection">
+        {projects.map((p,i)=><article class:list={['project-row',{'is-selected':i===0}]} data-project-row data-tech={JSON.stringify(p.data.technologies)} data-project-id={p.id}>
+          <div class="project-row-top"><span class="project-number" aria-hidden="true">{String(i+1).padStart(2,'0')}</span><span class="project-category">{p.data.category}</span>{p.data.example && <span class="example-tag">Example</span>}</div>
+          <a class="project-title-link" href={`/projects/${p.id}/`}><h2>{p.data.title}</h2><span aria-hidden="true">↗</span></a>
+          <p>{p.data.summary}</p><div class="project-row-bottom"><span>{p.data.technologies.join(' / ')}</span><button class="preview-button js-only" type="button" data-preview={p.id} aria-label={`Preview ${p.data.title}`} aria-pressed={i===0}>Preview <span aria-hidden="true">→</span></button></div>
+        </article>)}
+      </div>
+      <aside class="project-preview" aria-label="Selected project preview" data-enter>
+        {projects.map((p,i)=><div data-preview-panel={p.id} hidden={i!==0}><div class:list={['preview-frame',`accent-${p.data.accent}`]}><img src={p.data.thumbnail || '/art/share.svg'} alt={p.data.thumbnailAlt || 'Project concept artwork'} width="1200" height="720" loading={i===0?'eager':'lazy'} /></div><div class="preview-caption"><span>{p.data.example?'EXAMPLE CONCEPT':'PROJECT PREVIEW'}</span><span>{p.data.date.getFullYear()}</span></div><h2>{p.data.title}</h2><p>{p.data.summary}</p><a class="action-link" href={`/projects/${p.id}/`}>Open case study <span aria-hidden="true">↗</span></a></div>)}
+        {!first && <p>New projects will appear here.</p>}
+      </aside>
+    </div>
+    <div class="empty-state" data-project-empty hidden><h2>NO MATCH. NEW POSSIBILITY.</h2><p>No projects use this technology yet.</p><a class="action-link" href="/projects/" data-reset-filter>Show all projects ↗</a></div>
+  </section>
+</Layout>
+<script>import '../../scripts/projects';</script>

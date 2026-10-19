@@ -1,0 +1,31 @@
+{
+  "name": "persona-portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.11.1 <25"
+  },
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1",
+    "check": "astro check && node scripts/validate-content.mjs",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1",
+    "test": "playwright test",
+    "test:chromium": "playwright test --project=chromium",
+    "audit:site": "node scripts/audit-site.mjs"
+  },
+  "dependencies": {
+    "@fontsource/barlow-condensed": "5.3.0",
+    "@fontsource/dm-sans": "5.3.0",
+    "astro": "7.4.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.64.1",
+    "chrome-launcher": "1.2.2",
+    "lighthouse": "13.5.0",
+    "typescript": "6.0.3"
+  }
+}
