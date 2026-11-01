@@ -1,6 +1,14 @@
 // Actual game UI samples. No audio is fetched/decoded before visitor opt-in.
+import { withBase } from '../lib/paths';
+
 type Kind='select'|'confirm'|'back'|'page'|'open';
-const sources:Record<Kind,string>={select:'/persona/cursor.wav',confirm:'/persona/decision.wav',back:'/persona/cancel.wav',page:'/persona/page.wav',open:'/persona/menu.wav'};
+const sources:Record<Kind,string>={
+  select: withBase('/persona/cursor.wav'),
+  confirm: withBase('/persona/decision.wav'),
+  back: withBase('/persona/cancel.wav'),
+  page: withBase('/persona/page.wav'),
+  open: withBase('/persona/menu.wav'),
+};
 let context:AudioContext|undefined;
 let lastPlayed=0;
 let generation=0;

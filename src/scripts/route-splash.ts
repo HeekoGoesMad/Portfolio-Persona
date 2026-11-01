@@ -1,4 +1,5 @@
 import type { TransitionBeforePreparationEvent, TransitionBeforeSwapEvent } from 'astro:transitions/client';
+import { stripBase } from '../lib/paths';
 
 // The splash owns route motion; Astro still owns fetching, history and DOM swapping.
 const systemMotion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -19,7 +20,8 @@ function reset() {
   }
 }
 
-function destination(path: string): string {
+function destination(rawPath: string): string {
+  const path = stripBase(rawPath);
   if (path.startsWith('/projects/') && path !== '/projects/') return 'CASE STUDY';
   if (path === '/projects/') return 'PROJECTS';
   if (path === '/about/') return 'PROFILE';

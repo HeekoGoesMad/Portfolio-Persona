@@ -3,20 +3,22 @@ import Layout from '../layouts/Layout.astro';
 import { profile } from '../data/profile';
 import { persona } from '../data/persona';
 import { getProjects } from '../lib/projects';
+import { withBase } from '../lib/paths';
 const projects=await getProjects();
+const portraitSrcset = `${withBase('/persona/protagonist-768.webp')} 768w, ${withBase('/persona/protagonist-1280.webp')} 1280w, ${withBase('/persona/protagonist.webp')} 2048w`;
 ---
 <Layout title="Personal projects" section="Portfolio" home>
   <section class="persona-home" aria-labelledby="home-title">
     <h1 id="home-title" class="sr-only">Personal projects by {profile.name}</h1>
     <div class="persona-white-field" aria-hidden="true"></div>
     <div class="persona-page-decal" aria-hidden="true">PORTFOLIO</div>
-    <div class:list={['persona-portrait',`portrait-${persona.portraitMode}`]} aria-hidden="true"><img src={persona.portrait} srcset="/persona/protagonist-768.webp 768w, /persona/protagonist-1280.webp 1280w, /persona/protagonist.webp 2048w" sizes="(max-width:767px) 85vw,55vw" alt="" width="1280" height="720" fetchpriority="high" /></div>
+    <div class:list={['persona-portrait',`portrait-${persona.portraitMode}`]} aria-hidden="true"><img src={withBase(persona.portrait)} srcset={portraitSrcset} sizes="(max-width:767px) 85vw,55vw" alt="" width="1280" height="720" fetchpriority="high" /></div>
     <div class="persona-owner"><span>PERSONAL COLLECTION</span><strong>{profile.name}</strong><small>{profile.role}</small></div>
     <nav class="persona-menu hero-menu" aria-label="Explore the portfolio" data-key-list>
-      <a href="/projects/" class="persona-link hero-menu-link is-highlighted" data-description="Explore the project collection" data-menu-code="PROJECTS"><span class="persona-menu-text">PROJECTS</span><span class="persona-link-note">{String(projects.length).padStart(2,'0')} CASE STUDIES</span></a>
-      <a href="/about/" class="persona-link hero-menu-link" data-description="Meet the person behind the projects" data-menu-code="PROFILE"><span class="persona-menu-text">ABOUT</span></a>
-      <a href="/contact/" class="persona-link hero-menu-link" data-description="Start a conversation" data-menu-code="CONTACT"><span class="persona-menu-text">CONTACT</span></a>
-      {profile.resume && <a href={profile.resume} class="persona-link hero-menu-link" data-description="Read my résumé"><span class="persona-menu-text">RÉSUMÉ</span></a>}
+      <a href={withBase('/projects/')} class="persona-link hero-menu-link is-highlighted" data-description="Explore the project collection" data-menu-code="PROJECTS"><span class="persona-menu-text">PROJECTS</span><span class="persona-link-note">{String(projects.length).padStart(2,'0')} CASE STUDIES</span></a>
+      <a href={withBase('/about/')} class="persona-link hero-menu-link" data-description="Meet the person behind the projects" data-menu-code="PROFILE"><span class="persona-menu-text">ABOUT</span></a>
+      <a href={withBase('/contact/')} class="persona-link hero-menu-link" data-description="Start a conversation" data-menu-code="CONTACT"><span class="persona-menu-text">CONTACT</span></a>
+      {profile.resume && <a href={withBase(profile.resume)} class="persona-link hero-menu-link" data-description="Read my résumé"><span class="persona-menu-text">RÉSUMÉ</span></a>}
       <button type="button" class="persona-link hero-menu-link js-only" data-settings-open data-description="Adjust sound, music and motion"><span class="persona-menu-text">CONFIG</span></button>
     </nav>
     <div class="persona-context"><span class="context-marker" aria-hidden="true"></span><p data-menu-description>Explore the project collection</p><small>CHOOSE YOUR NEXT DESTINATION</small></div>

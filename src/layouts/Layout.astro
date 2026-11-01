@@ -10,11 +10,12 @@ import '../styles/global.css';
 import '../styles/persona.css';
 import { persona } from '../data/persona';
 import { profile } from '../data/profile';
+import { withBase, stripBase } from '../lib/paths';
 interface Props { title: string; description?: string; section?: string; home?: boolean; }
 const { title, description = profile.introduction, section='Portfolio', home=false } = Astro.props;
-const path = Astro.url.pathname;
+const path = stripBase(Astro.url.pathname);
 const configured = Astro.site && !['localhost','your-domain.example'].includes(Astro.site.hostname);
-const canonical = configured ? new URL(path, Astro.site) : undefined;
+const canonical = configured ? new URL(Astro.url.pathname, Astro.site) : undefined;
 const nav=[['Projects','/projects/'],['About','/about/'],['Contact','/contact/']];
 ---
 <!doctype html>
@@ -31,8 +32,8 @@ const nav=[['Projects','/projects/'],['About','/about/'],['Contact','/contact/']
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     {canonical && <meta property="og:url" content={canonical} />}
-    <meta property="og:image" content={new URL('/art/share.svg', Astro.site).href} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:image" content={new URL(withBase('/art/share.svg'), Astro.site).href} />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
     <script is:inline>
       try {
         if (localStorage.getItem('portfolio-motion') === 'reduce') document.documentElement.dataset.motion = 'reduce';
@@ -44,14 +45,14 @@ const nav=[['Projects','/projects/'],['About','/about/'],['Contact','/contact/']
     </script>
     {section !== 'Lost signal' && <ClientRouter fallback="none" />}
   </head>
-  <body class:list={['persona-shell', { 'is-home': home }]}><div class="game-scene" aria-hidden="true" transition:persist="classroom-scene"><img src={persona.background} alt="" width="1280" height="720" /><video class="classroom-video" poster={persona.background} data-scene-video muted loop playsinline preload="none"><source src="/persona/classroom-loop.mp4" type="video/mp4" /></video><div class="game-scene-tint"></div><div class="game-water-light"></div><div class="persona-theme-overlay"></div></div><audio id="persona-music" src={persona.music} preload="none" loop aria-hidden="true" transition:persist="persona-music"></audio>
+  <body class:list={['persona-shell', { 'is-home': home }]}><div class="game-scene" aria-hidden="true" transition:persist="classroom-scene"><img src={withBase(persona.background)} alt="" width="1280" height="720" /><video class="classroom-video" poster={withBase(persona.background)} data-scene-video muted loop playsinline preload="none"><source src={withBase('/persona/classroom-loop.mp4')} type="video/mp4" /></video><div class="game-scene-tint"></div><div class="game-water-light"></div><div class="persona-theme-overlay"></div></div><audio id="persona-music" src={withBase(persona.music)} preload="none" loop aria-hidden="true" transition:persist="persona-music"></audio>
     <RouteSplash />
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
-      <a class="brand" href="/" aria-label="Personal portfolio home"><span class="brand-symbol" aria-hidden="true" data-brand-symbol>P3</span><span>PERSONA<br /><strong data-brand-subtitle>PORTFOLIO</strong></span></a>
+      <a class="brand" href={withBase('/')} aria-label="Personal portfolio home"><span class="brand-symbol" aria-hidden="true" data-brand-symbol>P3</span><span>PERSONA<br /><strong data-brand-subtitle>PORTFOLIO</strong></span></a>
       <nav class="desktop-nav" aria-label="Main navigation">
-        {nav.map(([label,href])=><a href={href} aria-current={path.startsWith(href!) ? 'page' : undefined}>{label}</a>)}
-        {profile.resume && <a href={profile.resume}>Résumé <span aria-hidden="true">↗</span></a>}
+        {nav.map(([label,href])=><a href={withBase(href!)} aria-current={path.startsWith(href!) ? 'page' : undefined}>{label}</a>)}
+        {profile.resume && <a href={withBase(profile.resume)}>Résumé <span aria-hidden="true">↗</span></a>}
       </nav>
       <div class="header-controls">
         <div class="theme-switcher js-only" role="group" aria-label="Persona theme">
@@ -67,11 +68,11 @@ const nav=[['Projects','/projects/'],['About','/about/'],['Contact','/contact/']
         <button type="button" class="mobile-menu-button js-only" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu">Menu <span aria-hidden="true">+</span></button>
       </div>
       <nav id="mobile-menu" class="mobile-nav" aria-label="Mobile navigation" hidden>
-        {nav.map(([label,href])=><a href={href} aria-current={path.startsWith(href!) ? 'page' : undefined}>{label}<span aria-hidden="true">↗</span></a>)}
-        {profile.resume && <a href={profile.resume}>Résumé</a>}
+        {nav.map(([label,href])=><a href={withBase(href!)} aria-current={path.startsWith(href!) ? 'page' : undefined}>{label}<span aria-hidden="true">↗</span></a>)}
+        {profile.resume && <a href={withBase(profile.resume)}>Résumé</a>}
         <button type="button" class="mobile-preferences" data-settings-open>Preferences <span aria-hidden="true">+</span></button>
       </nav>
-      <noscript><nav class="noscript-nav" aria-label="Mobile navigation">{nav.map(([label,href])=><a href={href}>{label}</a>)}</nav></noscript>
+      <noscript><nav class="noscript-nav" aria-label="Mobile navigation">{nav.map(([label,href])=><a href={withBase(href!)}>{label}</a>)}</nav></noscript>
     </header>
     <main id="main" data-route-label={section} tabindex="-1"><slot /></main>
     <footer class="site-footer">
@@ -89,7 +90,7 @@ const nav=[['Projects','/projects/'],['About','/about/'],['Contact','/contact/']
       <label class="setting-row"><span><strong>Interface sounds</strong><small>Original Persona cursor, confirm and back sounds.</small></span><input type="checkbox" data-sound-input /><span class="toggle" aria-hidden="true"></span></label>
       <label class="setting-row"><span><strong>Reduce motion</strong><small>Your system preference is always respected.</small></span><input type="checkbox" data-motion-input /><span class="toggle" aria-hidden="true"></span></label>
       <label class="setting-row"><span><strong>Soundtrack</strong><small>Persona 3 Reload music. Play only when you choose.</small></span><input type="checkbox" data-music-input /><span class="toggle" aria-hidden="true"></span></label>
-      <label class="music-track-label" for="soundtrack-track">Soundtrack selection</label><select id="soundtrack-track" data-music-track>{persona.tracks.map(track=><option value={track.src}>{track.name}</option>)}</select>
+      <label class="music-track-label" for="soundtrack-track">Soundtrack selection</label><select id="soundtrack-track" data-music-track>{persona.tracks.map(track=><option value={withBase(track.src)}>{track.name}</option>)}</select>
       <p class="settings-note">Theme, sound, and motion preferences stay in this browser. Music starts only after you choose Play.</p>
     </dialog>
     <script>import '../scripts/site';</script>
