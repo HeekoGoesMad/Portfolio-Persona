@@ -7,12 +7,27 @@ date: 2026-09-20
 thumbnail: /art/ispy.svg
 thumbnailAlt: "iSpy Analytics artwork featuring Phantom Thieves red-and-black data bars and yellow sentiment trend lines"
 order: 2
-featured: false
+featured: true
+hidden: false
 category: "AI & Social Analytics"
 accent: pink
 repository: "https://github.com/HeekoGoesMad"
+demo: "https://github.com/HeekoGoesMad"
 example: false
 draft: false
+architectureOverview: "Asynchronous multi-service pipeline: Python PRAW & Playwright scrapers enqueue raw social streams into Redis/Celery workers running local RoBERTa sentiment & DeBERTa zero-shot stance transformers, persisted in MongoDB and served via FastAPI to a Next.js + Recharts dashboard."
+deliverables:
+  - "Dual-model HuggingFace NLP pipeline (RoBERTa sentiment + DeBERTa zero-shot stance)"
+  - "Distributed Celery + Redis task queue with live job progress telemetry"
+  - "Async FastAPI + Motor REST layer backed by indexed MongoDB aggregations"
+  - "Interactive Next.js + TypeScript + Recharts opinion intelligence workspace"
+gallery:
+  - src: "/art/ispy.svg"
+    alt: "iSpy Analytics sentiment polarity and stance breakdown visualization"
+    caption: "Real-time sentiment polarity and zero-shot stance distribution."
+  - src: "/persona/artbook/mitsuru.jpg"
+    alt: "Tactical command briefing aesthetic reference"
+    caption: "Command-briefing typography and high-contrast data hierarchy."
 ---
 
 ## The idea

@@ -7,6 +7,8 @@
 <style>
   :global(::view-transition-group(*)), :global(::view-transition-old(*)), :global(::view-transition-new(*)) {animation:none!important}
   .route-splash {position:fixed;inset:0;z-index:10000;display:grid;place-items:center;overflow:hidden;pointer-events:none;background:var(--blue-deep);color:var(--paper);contain:paint;transform:translate3d(-110%,0,0)}
+  :global(html[data-splash-style="slash"]) .route-splash {clip-path:polygon(0 0,100% 0,92% 100%,0 100%);border-right:6px solid var(--pink)}
+  :global(html[data-splash-style="curtain"]) .route-splash {border-bottom:6px solid var(--cyan)}
   .route-splash[data-state=idle] {visibility:hidden}
   .splash-label {display:flex;align-items:center;gap:1rem;padding:1.5rem;font:700 clamp(1.1rem,2vw,1.5rem)/1.2 var(--display);letter-spacing:.16em}
   .splash-rule {width:1.75rem;height:2px;background:var(--cyan);flex-shrink:0}

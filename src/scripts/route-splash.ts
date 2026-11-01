@@ -9,6 +9,17 @@ let serial = 0;
 let active: { id: number; path: string; swapped: boolean } | undefined;
 let movement: Animation | undefined;
 
+function splashVectors(): { enterFrom: string; exitTo: string } {
+  const style = document.documentElement.dataset.splashStyle || 'wipe';
+  if (style === 'curtain') {
+    return { enterFrom: 'translate3d(0,-110%,0)', exitTo: 'translate3d(0,110%,0)' };
+  }
+  if (style === 'slash') {
+    return { enterFrom: 'translate3d(-115%,8%,0) skewX(-8deg)', exitTo: 'translate3d(115%,-8%,0) skewX(-8deg)' };
+  }
+  return { enterFrom: 'translate3d(-110%,0,0)', exitTo: 'translate3d(110%,0,0)' };
+}
+
 function reset() {
   active = undefined;
   movement?.cancel();
@@ -26,6 +37,7 @@ function destination(rawPath: string): string {
   if (path === '/projects/') return 'PROJECTS';
   if (path === '/about/') return 'PROFILE';
   if (path === '/contact/') return 'CONTACT';
+  if (path.startsWith('/admin')) return 'CREATOR CMS';
   if (path === '/') return 'PORTFOLIO';
   return 'LOST SIGNAL';
 }
@@ -53,7 +65,8 @@ async function move(element: HTMLElement, from: string, to: string) {
 function cover(path: string) {
   const element = splash();
   if (!element) return;
-  const from = element.dataset.state === 'idle' ? 'translate3d(-110%,0,0)' : getComputedStyle(element).transform;
+  const { enterFrom } = splashVectors();
+  const from = element.dataset.state === 'idle' ? enterFrom : getComputedStyle(element).transform;
   movement?.cancel();
   movement = undefined;
   const id = ++serial;
@@ -73,15 +86,12 @@ document.addEventListener('astro:before-preparation', event => {
   const scene = cover(navigation.to.pathname);
   if (!scene) return;
   const { element, id, covered } = scene;
-  // A replacement navigation starts in this same task: let it retarget the
-  // visible wipe before cleaning up an abort with no replacement.
   navigation.signal.addEventListener('abort', () => {
     queueMicrotask(() => { if (active?.id === id) reset(); });
   }, { once: true });
   const load = navigation.loader;
   navigation.loader = async () => {
     try {
-      // Fetch during the wipe; no artificial loading pause or minimum display time.
       await Promise.all([load(), covered]);
       if (active?.id !== id || navigation.signal.aborted) return;
       if (navigation.defaultPrevented) { reset(); return; }
@@ -100,8 +110,6 @@ document.addEventListener('astro:before-preparation', event => {
 document.addEventListener('astro:before-swap', event => {
   const navigation = event as TransitionBeforeSwapEvent;
   if (navigation.from.pathname === navigation.to.pathname) return;
-  // Native snapshot animations are disabled in RouteSplash; the persistent
-  // element provides the motion without cancelling an in-progress browser swap.
   if (active?.path === navigation.to.pathname) active.swapped = true;
 });
 
@@ -110,8 +118,9 @@ document.addEventListener('astro:page-load', () => {
   const element = splash();
   if (!scene?.swapped || scene.path !== location.pathname || !element) return;
   if (reduced()) { reset(); return; }
+  const { exitTo } = splashVectors();
   element.dataset.state = 'revealing';
-  void move(element, getComputedStyle(element).transform, 'translate3d(110%,0,0)').then(() => {
+  void move(element, getComputedStyle(element).transform, exitTo).then(() => {
     if (active?.id === scene.id) reset();
   });
 });
@@ -123,9 +132,6 @@ document.addEventListener('change', event => {
 window.addEventListener('pagehide', reset);
 window.addEventListener('pageshow', event => { if (event.persisted) reset(); });
 
-// The recovery page deliberately uses ordinary navigation: WebKit crashes while
-// snapshotting that error document. Give its internal links the same exit splash
-// without asking the native View Transition API to snapshot it.
 document.addEventListener('click', event => {
   if (document.querySelector('[name="astro-view-transitions-enabled"]') || reduced()) return;
   if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;

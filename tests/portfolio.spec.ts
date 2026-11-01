@@ -229,3 +229,45 @@ test('keyboard menu selection stays immediate and background respects reduction'
   await page.emulateMedia({reducedMotion:'reduce'});
   await expect.poll(()=>page.locator('[data-scene-video]').evaluate((video:HTMLVideoElement)=>video.paused)).toBe(true);
 });
+
+
+test('dark and light mode toggle and category filter pills work cleanly',async({page})=>{
+  await page.goto('/projects/');
+  await expect(page.locator('html')).toHaveAttribute('data-color-mode','dark');
+  await page.locator('[data-color-mode-toggle]').click();
+  await expect(page.locator('html')).toHaveAttribute('data-color-mode','light');
+  const lightAxe = await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
+  expect(lightAxe.violations).toEqual([]);
+  await page.locator('[data-color-mode-toggle]').click();
+  await expect(page.locator('html')).toHaveAttribute('data-color-mode','dark');
+
+  await page.getByRole('button',{name:'AI & Social Analytics'}).click();
+  await expect(page).toHaveURL(/category=AI/);
+  await expect(page.locator('[data-project-row]:visible')).toHaveCount(1);
+  await expect(page.locator('[data-project-row]:visible')).toContainText('iSpy Analytics');
+  await page.getByRole('button',{name:'All Domains'}).click();
+  await expect(page.locator('[data-project-row]:visible')).toHaveCount(3);
+});
+
+test('interactive project quick-view modal opens and closes with keyboard focus restoration',async({page})=>{
+  await page.goto('/projects/');
+  const trigger = page.getByRole('button',{name:'Quick view BeTogether'});
+  await trigger.click();
+  const modal = page.locator('[data-project-modal]');
+  await expect(modal).toBeVisible();
+  await expect(modal).toContainText('Architecture Overview');
+  await expect(modal).toContainText('Key Deliverables');
+  await page.keyboard.press('Escape');
+  await expect(modal).toBeHidden();
+  await expect(trigger).toBeFocused();
+});
+
+test('contact form validates and filters honeypot spam',async({page})=>{
+  await page.goto('/contact/');
+  await page.getByLabel('Your Name').fill('Makoto Yuki');
+  await page.getByLabel('Your Email').fill('makoto@gekko.jp');
+  await page.getByLabel('Message').fill('Exploring a full-stack collaboration.');
+  await page.getByRole('button',{name:/Send Message/}).click();
+  await expect(page.locator('[data-contact-status]')).toBeVisible();
+  await expect(page.locator('[data-contact-status]')).toContainText('adriennelie190505@gmail.com');
+});

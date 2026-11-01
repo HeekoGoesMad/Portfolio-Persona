@@ -349,3 +349,160 @@ html[data-persona-theme="p5r"] .site-footer {background:#080204f2}
 html[data-persona-theme="p5r"] [data-music-track],
 html[data-persona-theme="p5r"] [data-theme-dropdown] {background:#080204;border-color:#ff6e89}
 @media(max-width:767px){.theme-switcher{display:none}}
+
+
+/* ==========================================================================
+   NEW FEATURES: HERO BIO PILLS, CATEGORY PILLS, QUICK-VIEW MODAL,
+   DOMAIN SKILLS, CONTACT FORM, CREATOR STUDIO & LIGHT/DAYLIGHT MODE
+   ========================================================================== */
+
+/* Home Owner Bio & Quick Links */
+.owner-bio {font-size:.66rem;line-height:1.45;color:#223056;margin:.45rem 0 .6rem;max-width:34ch;margin-left:auto}
+.owner-quick-links {display:flex;flex-wrap:wrap;justify-content:flex-end;gap:.4rem;margin-top:.35rem}
+.owner-pill {display:inline-flex;align-items:center;padding:.22rem .55rem;font:700 .56rem/1.2 var(--body);letter-spacing:.05em;text-transform:uppercase;background:#050b28;color:#f6f8f5;border:1px solid #050b28}
+.owner-pill-accent {background:#ff2e62;color:#ffffff;border-color:#050b28}
+.footer-admin-link {font-weight:700;color:var(--cyan);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase}
+
+/* Header Color Mode Button & Dropdown */
+.color-mode-button {display:inline-flex;align-items:center;gap:.35rem}
+[data-color-mode-dropdown],
+[data-splash-style-select] {width:100%;padding:.7rem;background:#03082c;border:1px solid #7eeaf399;color:#f3f6f0;font-size:.78rem}
+
+/* Creator Transition & Content Editor inside CONFIG Dialog */
+.creator-studio-panel {margin-top:1.25rem;padding:.9rem 1rem;background:#04082be6;border-left:4px solid var(--cyan)}
+.creator-studio-panel summary {cursor:pointer;font:800 italic 1.2rem/1.2 var(--display);letter-spacing:.05em;color:var(--cyan)}
+.creator-studio-body {margin-top:.8rem;display:grid;gap:.75rem}
+.creator-studio-note {font-size:.68rem;color:#d7e9fa;margin:0}
+.creator-studio-note code {background:#02061b;padding:.1rem .35rem;color:var(--cyan)}
+.creator-grid {display:grid;gap:.45rem}
+.creator-grid label {font-size:.68rem;color:#d7e9fa;margin-top:.25rem}
+.creator-grid input {width:100%;padding:.55rem .7rem;background:#03082c;border:1px solid #7eeaf399;color:#f3f6f0;font-size:.78rem}
+.creator-actions {margin-top:.5rem}
+.creator-cms-btn {width:100%;justify-content:center;padding:.65rem 1rem;font-size:.72rem}
+
+/* Project Categorization Pills & Row Actions */
+.project-toolbar {flex-wrap:wrap;justify-content:space-between}
+.category-pills {display:flex;flex-wrap:wrap;gap:.45rem}
+.category-pill {background:#02082ee8;color:#d7e9fa;border:1px solid #5bf3f655;padding:.4rem .8rem;font:700 .64rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;transform:skew(-7deg);transition:background var(--selection) var(--ease),color var(--selection) var(--ease)}
+.category-pill[aria-pressed="true"] {background:var(--cyan);color:#030824;border-color:var(--cyan)}
+.toolbar-tech-group {display:flex;align-items:center;gap:.65rem}
+.project-row-actions {display:flex;align-items:center;gap:.85rem;flex-shrink:0}
+.preview-actions {display:flex;flex-wrap:wrap;align-items:center;gap:.85rem;margin-top:.75rem}
+.action-link-secondary {background:#03082c;color:#f3f6f0;border:1px solid var(--cyan);box-shadow:4px 4px 0 var(--cyan)}
+
+/* Interactive Project Details Modal */
+.project-modal {width:min(760px,calc(100% - 32px));max-height:88dvh;overflow-y:auto;padding:2rem;background:#08104a;color:#f3f5ee;border:0;border-top:6px solid var(--pink);box-shadow:10px 10px 0 #020823}
+.project-modal::backdrop {background:#020722cc}
+.project-modal h2 {font-size:clamp(2.6rem,4.5vw,3.8rem);margin-bottom:.5rem}
+.modal-summary {color:#d7e9fa;font-size:.9rem;margin-bottom:1rem}
+.modal-tech-tags {display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.5rem}
+.modal-tech-badge {background:#030824;color:var(--cyan);border:1px solid #5bf3f666;padding:.28rem .65rem;font-size:.66rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+.modal-section {margin-top:1.4rem;padding-top:1.1rem;border-top:1px solid #7da9ee44}
+.modal-section h3 {font:800 italic 1.6rem/1.1 var(--display);color:var(--cyan);margin-bottom:.6rem;letter-spacing:.02em}
+.modal-section p,.modal-deliverables li {font-size:.84rem;color:#e3effd}
+.modal-deliverables {padding-left:1.2rem;margin:0}
+.modal-gallery {display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:.75rem}
+.modal-gallery-item {margin:0;background:#030824;border-top:3px solid var(--cyan);padding:.5rem}
+.modal-gallery-item img {width:100%;height:170px;object-fit:cover}
+.modal-gallery-item figcaption {font-size:.68rem;color:#c9e2fb;padding-top:.45rem}
+.modal-footer-links {display:flex;flex-wrap:wrap;align-items:center;gap:1.25rem;margin-top:1.75rem;padding-top:1.1rem;border-top:1px solid #7da9ee44}
+
+/* Case Study Extra Blocks & Gallery */
+.case-extra-block {margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid #7da9ee44}
+.case-gallery-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.25rem;margin-top:1rem}
+.case-gallery-card {margin:0;background:#02061f;border-top:3px solid var(--cyan);padding:.6rem}
+.case-gallery-card img {width:100%;height:200px;object-fit:cover;margin:0}
+.case-gallery-card figcaption {font-size:.72rem;color:#d6e8fb;padding-top:.5rem}
+
+/* About Page Domain-Grouped Skills */
+.skill-domains {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:1rem;margin-top:.85rem}
+.skill-domain-card {background:#e8eef5;border-left:4px solid #0c37a4;padding:.85rem 1rem;min-width:0}
+.skill-domain-card h4 {margin:0 0 .55rem;font:800 italic 1.25rem/1.1 var(--display);color:#050b28;letter-spacing:.02em;text-transform:uppercase;overflow-wrap:anywhere}
+.about-actions {flex-wrap:wrap;gap:1rem}
+
+/* Contact Form & Anti-Spam Styles */
+.contact-intro-col {display:grid;align-content:start;gap:1rem}
+.social-pill {display:inline-flex;align-items:center;padding:.45rem .85rem;background:#02082e;border:1px solid #5bf3f666;color:#f3f5ee;font-size:.75rem;font-weight:600}
+.contact-form {background:#02082ce8;padding:1.75rem;border-top:4px solid var(--pink);box-shadow:7px 7px 0 #02061b;display:grid;gap:1rem}
+.contact-form h2 {font-size:2.4rem;margin:0;color:var(--cyan)}
+.form-honeypot {position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.form-field {display:grid;gap:.35rem}
+.form-field label {font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#d7e9fa}
+.form-field input,
+.form-field select,
+.form-field textarea {width:100%;padding:.7rem .85rem;background:#050d38;border:1px solid #7eeaf388;color:#f3f6f0;font:inherit;font-size:.82rem}
+.form-field textarea {resize:vertical;min-height:96px}
+.form-actions {display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;margin-top:.35rem}
+.contact-submit-btn {border:0}
+.spam-shield-badge {font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;color:#9be7ff}
+.form-status {margin:0;padding:.75rem 1rem;background:#05144d;border-left:4px solid var(--cyan);font-size:.78rem;color:#f3f6f0}
+
+/* ==========================================================================
+   DAYLIGHT SCHOOL MODE (LIGHT MODE // WCAG AA COMPLIANT)
+   ========================================================================== */
+html[data-color-mode="light"] {
+  color-scheme: light;
+}
+html[data-color-mode="light"] .persona-shell {
+  background: #0b2470;
+}
+html[data-color-mode="light"] .game-scene>img,
+html[data-color-mode="light"] .classroom-video {
+  filter: saturate(1.08) brightness(1.06);
+}
+html[data-color-mode="light"] .game-scene-tint {
+  background: linear-gradient(180deg, rgba(10, 38, 120, 0.55) 0%, rgba(7, 25, 88, 0.78) 55%, rgba(4, 15, 58, 0.92) 100%);
+}
+html[data-color-mode="light"] .project-row:not(.is-selected) {
+  background: #f4f7fc;
+  color: #061030;
+  border-left: 4px solid #072ac8;
+  box-shadow: 5px 5px 0 #040d33;
+}
+html[data-color-mode="light"] .project-row:not(.is-selected)>p {
+  color: #1f2f54;
+}
+html[data-color-mode="light"] .project-row:not(.is-selected) .project-number,
+html[data-color-mode="light"] .project-row:not(.is-selected) .project-category {
+  color: #08299c;
+}
+html[data-color-mode="light"] .project-row.is-selected {
+  background: #ffffff;
+  color: #040a24;
+  border-top: 4px solid #d90445;
+  box-shadow: 7px 7px 0 #040d33;
+}
+html[data-color-mode="light"] .article-layout {
+  background: #f7f9fd;
+  color: #0a1433;
+  box-shadow: 8px 8px 0 #040d33;
+}
+html[data-color-mode="light"] .article-layout .prose,
+html[data-color-mode="light"] .article-layout .prose p,
+html[data-color-mode="light"] .article-layout .prose li,
+html[data-color-mode="light"] .article-layout .case-extra-block p {
+  color: #1a2747;
+}
+html[data-color-mode="light"] .article-layout .prose h2,
+html[data-color-mode="light"] .article-layout .prose h3,
+html[data-color-mode="light"] .article-layout .prose strong {
+  color: #050c24;
+}
+html[data-color-mode="light"] .article-layout .prose a,
+html[data-color-mode="light"] .article-layout .article-nav a,
+html[data-color-mode="light"] .article-layout .article-nav .eyebrow {
+  color: #06299e;
+}
+html[data-color-mode="light"] .article-layout .prose code {
+  background: #e2eaf8;
+  color: #050c24;
+}
+
+@media(max-width:767px) {
+  .owner-bio {display:none}
+  .owner-quick-links {display:none}
+  .color-mode-button span[data-color-mode-label] {display:none}
+  .toolbar-tech-group {width:100%}
+  .category-pills {width:100%}
+  .about-copy {overflow:hidden}
+}

@@ -22,18 +22,31 @@ const block = z.object({
 export type CmsBlock = z.infer<typeof block>;
 export const headingId = (value: { _key: string; anchor?: string }) => value.anchor || `section-${value._key}`;
 
+const galleryItemSchema = z.object({
+  alt: text.default('Project showcase screenshot'),
+  caption: z.string().nullish(),
+  localSrc: z.string().nullish(),
+  imageUrl: webUrl.nullish(),
+});
+
 const document = z.object({
   _id: text.refine(id => !id.startsWith('drafts.') && !id.startsWith('versions.'), 'Only published documents may enter the website.'),
   title: text, slug: z.object({ current: slug }), summary: text, role: text,
   technologies: z.array(text).min(1), date: z.coerce.date(), category: text,
   order: z.number().int().nonnegative().default(99), featured: z.boolean().default(false),
-  example: z.boolean().default(true), accent: z.enum(['cyan', 'pink', 'lime']).default('cyan'),
+  hidden: z.boolean().nullish().transform(v => v ?? false),
+  example: z.boolean().default(false), accent: z.enum(['cyan', 'pink', 'lime']).default('cyan'),
   thumbnail: z.string().regex(/^\/(?:art|persona)\//, 'Select an existing local portfolio cover.').nullish(),
-  thumbnailAlt: text.nullish(), repository: webUrl.nullish(), demo: webUrl.nullish(),
+  coverImageUrl: webUrl.nullish(),
+  thumbnailAlt: text.nullish(),
+  architectureOverview: z.string().nullish(),
+  deliverables: z.array(text).nullish().transform(v => v ?? []),
+  gallery: z.array(galleryItemSchema).nullish().transform(v => v ?? []),
+  repository: webUrl.nullish(), demo: webUrl.nullish(),
   archivedAt: z.null().optional(), trashedAt: z.null().optional(),
   body: z.array(block).min(1).refine(blocks => blocks.some(b => b.children.some(s => s.text.trim())), 'Write some case-study content.'),
 }).superRefine((project, context) => {
-  if (project.thumbnail && !project.thumbnailAlt) context.addIssue({ code: 'custom', path: ['thumbnailAlt'], message: 'Add alt text for the cover.' });
+  if ((project.thumbnail || project.coverImageUrl) && !project.thumbnailAlt) context.addIssue({ code: 'custom', path: ['thumbnailAlt'], message: 'Add alt text for the cover.' });
   const keys = new Set<string>();
   const anchors = new Set<string>();
   project.body.forEach((item, index) => {
@@ -57,11 +70,28 @@ export function parseCmsProjects(input: unknown) {
     const id = project.slug.current;
     if (slugs.has(id)) throw new Error(`Duplicate CMS project slug: ${id}`);
     slugs.add(id);
-    const { _id, slug: _slug, body, archivedAt: _archivedAt, trashedAt: _trashedAt, ...metadata } = project;
+    const { _id, slug: _slug, body, coverImageUrl, gallery, archivedAt: _archivedAt, trashedAt: _trashedAt, ...metadata } = project;
+    const resolvedThumb = coverImageUrl ? `${coverImageUrl}?auto=format&w=1200&q=85` : (metadata.thumbnail ?? undefined);
+    const normalizedGallery = gallery
+      .map(g => ({
+        src: g.imageUrl ? `${g.imageUrl}?auto=format&w=1200&q=85` : (g.localSrc || ''),
+        alt: g.alt,
+        caption: g.caption ?? undefined,
+      }))
+      .filter(g => Boolean(g.src));
     return {
       id, documentId: _id, source: 'sanity' as const, body,
-      data: { ...metadata, draft: false, thumbnail: metadata.thumbnail ?? undefined,
-        thumbnailAlt: metadata.thumbnailAlt ?? undefined, repository: metadata.repository ?? undefined, demo: metadata.demo ?? undefined },
+      data: {
+        ...metadata,
+        draft: false,
+        thumbnail: resolvedThumb,
+        thumbnailAlt: metadata.thumbnailAlt ?? undefined,
+        architectureOverview: metadata.architectureOverview ?? undefined,
+        deliverables: metadata.deliverables,
+        gallery: normalizedGallery,
+        repository: metadata.repository ?? undefined,
+        demo: metadata.demo ?? undefined,
+      },
     };
   });
 }

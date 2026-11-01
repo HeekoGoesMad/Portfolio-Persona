@@ -14,12 +14,20 @@ const projects = defineCollection({
     thumbnailAlt: z.string().min(1).optional(),
     order: z.number().int().nonnegative().default(99),
     featured: z.boolean().default(false),
+    hidden: z.boolean().default(false),
     repository: z.url().optional(),
     demo: z.url().optional(),
     example: z.boolean().default(true),
     draft: z.boolean().default(false),
     category: z.string().min(1),
     accent: z.enum(['cyan','pink','lime']).default('cyan'),
+    architectureOverview: z.string().min(1).optional(),
+    deliverables: z.array(z.string().min(1)).default([]),
+    gallery: z.array(z.object({
+      src: z.string().min(1),
+      alt: z.string().min(1),
+      caption: z.string().optional(),
+    })).default([]),
   }).refine(p => !p.thumbnail || !!p.thumbnailAlt, { message: 'thumbnailAlt is required when thumbnail is supplied', path: ['thumbnailAlt'] }),
 });
 

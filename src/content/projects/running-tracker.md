@@ -7,12 +7,27 @@ date: 2026-10-24
 thumbnail: /art/running-tracker.svg
 thumbnailAlt: "Running Tracker artwork with Midnight Channel yellow framing and cyan GPS route telemetry"
 order: 3
-featured: false
+featured: true
+hidden: false
 category: "Fitness & GPS Telemetry"
 accent: lime
 repository: "https://github.com/HeekoGoesMad"
+demo: "https://github.com/HeekoGoesMad"
 example: false
 draft: false
+architectureOverview: "Offline-first Android architecture in Kotlin & Jetpack Compose: a dedicated Foreground Location Service streams high-precision GPS points into Room SQLite storage, paired with a deterministic adaptive training coach engine and MapLibre Native vector route rendering."
+deliverables:
+  - "Crash-resilient Android Foreground GPS Recording Service with lock-screen controls"
+  - "Deterministic Adaptive Coach engine with transparent plan diff reviews"
+  - "MapLibre Native offline-capable route heatmaps & transparent PNG social overlays"
+  - "Duplicate-safe GPX import/export and ICS calendar workout sync across 84 UI screens"
+gallery:
+  - src: "/art/running-tracker.svg"
+    alt: "Running Tracker GPS telemetry and split pace analysis screen"
+    caption: "Offline-first GPS route telemetry and adaptive interval pacing."
+  - src: "/persona/artbook/aigis.jpg"
+    alt: "Precision HUD telemetry inspiration"
+    caption: "Split-second outdoor readability and kinetic HUD framing."
 ---
 
 ## The idea

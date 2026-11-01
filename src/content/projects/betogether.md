@@ -8,11 +8,26 @@ thumbnail: /art/betogether.svg
 thumbnailAlt: "BeTogether concept artwork showing a stylized tactical radar map and real-time social nodes"
 order: 1
 featured: true
+hidden: false
 category: "Social Location & Mobile"
 accent: cyan
 repository: "https://github.com/HeekoGoesMad/betogether"
+demo: "https://github.com/HeekoGoesMad/betogether"
 example: false
 draft: false
+architectureOverview: "Feature-modular Flutter 3.44 client using Riverpod reactive streams decoupled from an OpenStreetMap tile/marker engine, synchronized via Cloud Firestore, Firebase Auth, and Cloudinary media pipelines."
+deliverables:
+  - "Real-time friend pin & group cluster radar on OpenStreetMap"
+  - "Ephemeral location-tagged photo stories with Cloudinary WebP delivery"
+  - "Granular ghost-mode & friend-tier privacy controls"
+  - "140 automated Flutter widget and unit tests"
+gallery:
+  - src: "/art/betogether.svg"
+    alt: "BeTogether interactive radar map and social presence clusters"
+    caption: "Tactical friend radar & live OpenStreetMap presence layer."
+  - src: "/persona/artbook/yukari.jpg"
+    alt: "Stylized character UI inspiration from Persona 3 Reload"
+    caption: "High-contrast social link badges & status overlays."
 ---
 
 ## The idea

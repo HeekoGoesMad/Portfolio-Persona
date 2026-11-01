@@ -1,9 +1,15 @@
 import type { TransitionBeforeSwapEvent } from 'astro:transitions/client';
+import { revalidateFromSanityCdn } from './cms-sync';
 
 const readPreference = (key: string) => { try { return localStorage.getItem(key); } catch { return null; } };
 const writePreference = (key: string, value: string) => { try { localStorage.setItem(key, value); } catch { /* Browser storage is optional. */ } };
 type PersonaTheme = 'p3r' | 'p4g' | 'p5r';
+type ColorModePref = 'dark' | 'light' | 'system';
+type SplashStyle = 'wipe' | 'curtain' | 'slash';
+
 const validTheme = (val: string | null): PersonaTheme => (val === 'p4g' || val === 'p5r' ? val : 'p3r');
+const validColorMode = (val: string | null): ColorModePref => (val === 'light' || val === 'system' ? val : 'dark');
+const validSplashStyle = (val: string | null): SplashStyle => (val === 'curtain' || val === 'slash' ? val : 'wipe');
 
 let sound = readPreference('portfolio-sound') === 'on';
 let music = false;
@@ -11,11 +17,22 @@ let musicRequest = 0;
 let soundModule: Promise<typeof import('./audio')> | undefined;
 let reduce = readPreference('portfolio-motion') === 'reduce';
 let personaTheme: PersonaTheme = validTheme(readPreference('portfolio-persona-theme'));
+let colorModePref: ColorModePref = validColorMode(readPreference('portfolio-color-mode'));
+let splashStyle: SplashStyle = validSplashStyle(readPreference('portfolio-splash-style'));
+let panelDuration = Number(readPreference('portfolio-panel-duration')) || 240;
+let pageDuration = Number(readPreference('portfolio-page-duration')) || 280;
+
 let returnFocus: HTMLElement | null = null;
 let afterSwap = false;
 let navigationFromKeyboard = false;
 const systemMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const systemLight = matchMedia('(prefers-color-scheme: light)');
 const isReduced = () => reduce || systemMotion.matches;
+
+const resolveColorMode = (): 'dark' | 'light' => {
+  if (colorModePref === 'system') return systemLight.matches ? 'light' : 'dark';
+  return colorModePref;
+};
 
 const themeMeta: Record<PersonaTheme, { symbol: string; sub: string; color: string }> = {
   p3r: { symbol: 'P3', sub: 'DARK HOUR', color: '#0629ae' },
@@ -28,19 +45,65 @@ async function feedback(kind: 'select' | 'confirm' | 'back' | 'page' | 'open') {
   try { const module = await (soundModule ??= import('./audio')); if (sound) await module.playTone(kind); } catch { /* Unsupported or blocked audio does not affect navigation. */ }
 }
 
+function trackAnalyticsEvent(eventName: string, data?: Record<string, string>) {
+  try {
+    const win = window as unknown as { umami?: { track: (name: string, payload?: Record<string, string>) => void } };
+    if (win.umami?.track) win.umami.track(eventName, data);
+    const key = 'portfolio-analytics-clicks';
+    const current = JSON.parse(localStorage.getItem(key) || '{}') as Record<string, number>;
+    const metricKey = data?.project ? `project:${data.project}` : eventName;
+    current[metricKey] = (current[metricKey] || 0) + 1;
+    localStorage.setItem(key, JSON.stringify(current));
+  } catch {
+    /* Privacy-safe no-op */
+  }
+}
+
 function syncPreferences() {
   if (!sound) void soundModule?.then(module => module.stopSounds());
   document.documentElement.dataset.personaTheme = personaTheme;
+  const activeColorMode = resolveColorMode();
+  document.documentElement.dataset.colorMode = activeColorMode;
+  document.documentElement.dataset.splashStyle = splashStyle;
+
+  if (panelDuration >= 80) document.documentElement.style.setProperty('--panel', `${panelDuration}ms`);
+  if (pageDuration >= 100) document.documentElement.style.setProperty('--page', `${pageDuration}ms`);
+
   const meta = themeMeta[personaTheme];
   document.querySelectorAll('[data-brand-symbol]').forEach(el => { el.textContent = meta.symbol; });
-  document.querySelectorAll('[data-brand-subtitle]').forEach(el => { el.textContent = meta.sub; });
-  document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')?.setAttribute('content', meta.color);
+  document.querySelectorAll('[data-brand-subtitle]').forEach(el => {
+    el.textContent = activeColorMode === 'light' && personaTheme === 'p3r' ? 'DAYLIGHT' : meta.sub;
+  });
+  document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')?.setAttribute('content', activeColorMode === 'light' ? '#eef4fb' : meta.color);
   document.querySelectorAll<HTMLButtonElement>('[data-theme-select]').forEach(btn => {
     const active = btn.dataset.themeSelect === personaTheme;
     btn.setAttribute('aria-pressed', String(active));
   });
   document.querySelectorAll<HTMLSelectElement>('[data-theme-dropdown]').forEach(sel => {
     sel.value = personaTheme;
+  });
+
+  // Color mode controls
+  const isLight = activeColorMode === 'light';
+  document.querySelectorAll<HTMLButtonElement>('[data-color-mode-toggle]').forEach(btn => {
+    btn.setAttribute('aria-pressed', String(isLight));
+    btn.setAttribute('aria-label', `Color mode: ${activeColorMode}`);
+  });
+  document.querySelectorAll('[data-color-mode-icon]').forEach(icon => { icon.textContent = isLight ? '☀' : '☾'; });
+  document.querySelectorAll('[data-color-mode-label]').forEach(lbl => { lbl.textContent = isLight ? 'LIGHT' : 'DARK'; });
+  document.querySelectorAll<HTMLSelectElement>('[data-color-mode-dropdown]').forEach(sel => {
+    sel.value = colorModePref;
+  });
+
+  // Transition editor controls
+  document.querySelectorAll<HTMLSelectElement>('[data-splash-style-select]').forEach(sel => {
+    sel.value = splashStyle;
+  });
+  document.querySelectorAll<HTMLInputElement>('[data-panel-duration-input]').forEach(inp => {
+    inp.value = String(panelDuration);
+  });
+  document.querySelectorAll<HTMLInputElement>('[data-page-duration-input]').forEach(inp => {
+    inp.value = String(pageDuration);
   });
 
   document.querySelectorAll<HTMLButtonElement>('[data-music-toggle]').forEach(button => { button.setAttribute('aria-pressed', String(music)); button.setAttribute('aria-label', `Music: ${music ? 'on' : 'off'}`); });
@@ -76,6 +139,13 @@ function setPersonaTheme(next: PersonaTheme) {
   void feedback('page');
 }
 
+function setColorMode(next: ColorModePref) {
+  colorModePref = next;
+  writePreference('portfolio-color-mode', next);
+  syncPreferences();
+  void feedback('select');
+}
+
 function closeMenu(restoreFocus = false) {
   const menu = document.querySelector<HTMLElement>('#mobile-menu');
   const button = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
@@ -87,6 +157,7 @@ function closeMenu(restoreFocus = false) {
 function setupPage() {
   document.documentElement.classList.add('has-js');
   syncPreferences();
+  void revalidateFromSanityCdn();
   const dialog = document.querySelector<HTMLDialogElement>('.settings-dialog');
   if (dialog && !dialog.dataset.bound) {
     dialog.dataset.bound = 'true';
@@ -113,12 +184,15 @@ document.addEventListener('astro:before-swap', (event) => {
   const swap = event as TransitionBeforeSwapEvent;
   swap.newDocument.documentElement.dataset.motion = reduce ? 'reduce' : 'system';
   swap.newDocument.documentElement.dataset.personaTheme = personaTheme;
+  swap.newDocument.documentElement.dataset.colorMode = resolveColorMode();
+  swap.newDocument.documentElement.dataset.splashStyle = splashStyle;
   swap.newDocument.documentElement.classList.add('has-js');
   swap.newDocument.documentElement.dataset.input = document.documentElement.dataset.input || 'pointer';
   afterSwap = true;
 });
 document.addEventListener('astro:page-load', setupPage);
 systemMotion.addEventListener('change', syncPreferences);
+systemLight.addEventListener('change', syncPreferences);
 document.addEventListener('keydown', (event) => {
   navigationFromKeyboard = true;
   document.documentElement.dataset.input = 'keyboard';
@@ -139,9 +213,18 @@ document.addEventListener('pointerdown', () => { navigationFromKeyboard = false;
 document.addEventListener('click', (event) => {
   const target = event.target instanceof Element ? event.target : null;
   if (!target) return;
+  const tracked = target.closest<HTMLElement>('[data-track-project]');
+  if (tracked?.dataset.trackProject) {
+    trackAnalyticsEvent('project_click', { project: tracked.dataset.trackProject });
+  }
   const themeBtn = target.closest<HTMLElement>('[data-theme-select]');
   if (themeBtn?.dataset.themeSelect) {
     setPersonaTheme(validTheme(themeBtn.dataset.themeSelect));
+    return;
+  }
+  if (target.closest('[data-color-mode-toggle]')) {
+    const next = resolveColorMode() === 'dark' ? 'light' : 'dark';
+    setColorMode(next);
     return;
   }
   const menuButton = target.closest('[data-menu-toggle]');
@@ -164,11 +247,38 @@ document.addEventListener('click', (event) => {
 });
 document.addEventListener('change', (event) => {
   const target = event.target;
-  if (target instanceof HTMLSelectElement && target.matches('[data-theme-dropdown]')) {
-    setPersonaTheme(validTheme(target.value));
-    return;
+  if (target instanceof HTMLSelectElement) {
+    if (target.matches('[data-theme-dropdown]')) {
+      setPersonaTheme(validTheme(target.value));
+      return;
+    }
+    if (target.matches('[data-color-mode-dropdown]')) {
+      setColorMode(validColorMode(target.value));
+      return;
+    }
+    if (target.matches('[data-splash-style-select]')) {
+      splashStyle = validSplashStyle(target.value);
+      writePreference('portfolio-splash-style', splashStyle);
+      syncPreferences();
+      void feedback('page');
+      return;
+    }
   }
   if (!(target instanceof HTMLInputElement)) return;
+  if (target.matches('[data-panel-duration-input]')) {
+    const val = Math.min(1200, Math.max(80, Number(target.value) || 240));
+    panelDuration = val;
+    writePreference('portfolio-panel-duration', String(val));
+    syncPreferences();
+    return;
+  }
+  if (target.matches('[data-page-duration-input]')) {
+    const val = Math.min(1500, Math.max(100, Number(target.value) || 280));
+    pageDuration = val;
+    writePreference('portfolio-page-duration', String(val));
+    syncPreferences();
+    return;
+  }
   if (target.matches('[data-sound-input]')) { sound = target.checked; writePreference('portfolio-sound', sound ? 'on' : 'off'); syncPreferences(); if (sound) void feedback('confirm'); }
   if (target.matches('[data-music-input]')) void toggleMusic(target.checked);
   if (target.matches('[data-motion-input]')) { reduce = target.checked; writePreference('portfolio-motion', reduce ? 'reduce' : 'system'); syncPreferences(); void feedback('select'); }

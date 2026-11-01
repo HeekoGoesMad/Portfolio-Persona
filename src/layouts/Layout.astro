@@ -11,35 +11,55 @@ import '../styles/persona.css';
 import { persona } from '../data/persona';
 import { profile } from '../data/profile';
 import { withBase, stripBase } from '../lib/paths';
-interface Props { title: string; description?: string; section?: string; home?: boolean; }
-const { title, description = profile.introduction, section='Portfolio', home=false } = Astro.props;
+interface Props { title: string; description?: string; section?: string; home?: boolean; ogImage?: string; }
+const { title, description = profile.introduction, section='Portfolio', home=false, ogImage } = Astro.props;
 const path = stripBase(Astro.url.pathname);
 const configured = Astro.site && !['localhost','your-domain.example'].includes(Astro.site.hostname);
 const canonical = configured ? new URL(Astro.url.pathname, Astro.site) : undefined;
+const resolvedOgImage = new URL(withBase(ogImage || '/art/share.svg'), Astro.site).href;
+const umamiWebsiteId = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID || '';
+const umamiScriptUrl = import.meta.env.PUBLIC_UMAMI_SCRIPT_URL || 'https://cloud.umami.is/script.js';
 const nav=[['Projects','/projects/'],['About','/about/'],['Contact','/contact/']];
 ---
 <!doctype html>
-<html lang="en" data-motion="system" data-persona-theme="p3r">
+<html lang="en" data-motion="system" data-persona-theme="p3r" data-color-mode="dark" data-splash-style="wipe">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="theme-color" content="#0629ae" />
     <title>{title} | {profile.name}</title>
     <meta name="description" content={description} />
+    <meta name="author" content={profile.name} />
     <meta name="robots" content={profile.example ? 'noindex, nofollow' : 'index, follow'} />
     {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:site_name" content={`${profile.name} — Persona Portfolio`} />
     <meta property="og:title" content={`${title} | ${profile.name}`} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     {canonical && <meta property="og:url" content={canonical} />}
-    <meta property="og:image" content={new URL(withBase('/art/share.svg'), Astro.site).href} />
+    <meta property="og:image" content={resolvedOgImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${title} | ${profile.name}`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={resolvedOgImage} />
     <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+    {umamiWebsiteId && <script defer src={umamiScriptUrl} data-website-id={umamiWebsiteId}></script>}
     <script is:inline>
       try {
         if (localStorage.getItem('portfolio-motion') === 'reduce') document.documentElement.dataset.motion = 'reduce';
         const savedTheme = localStorage.getItem('portfolio-persona-theme');
         if (savedTheme === 'p3r' || savedTheme === 'p4g' || savedTheme === 'p5r') {
           document.documentElement.dataset.personaTheme = savedTheme;
+        }
+        const savedMode = localStorage.getItem('portfolio-color-mode');
+        if (savedMode === 'light' || savedMode === 'dark') {
+          document.documentElement.dataset.colorMode = savedMode;
+        } else if (savedMode === 'system' && window.matchMedia('(prefers-color-scheme: light)').matches) {
+          document.documentElement.dataset.colorMode = 'light';
+        }
+        const savedSplash = localStorage.getItem('portfolio-splash-style');
+        if (savedSplash === 'wipe' || savedSplash === 'curtain' || savedSplash === 'slash') {
+          document.documentElement.dataset.splashStyle = savedSplash;
         }
       } catch {}
     </script>
@@ -52,7 +72,7 @@ const nav=[['Projects','/projects/'],['About','/about/'],['Contact','/contact/']
       <a class="brand" href={withBase('/')} aria-label="Personal portfolio home"><span class="brand-symbol" aria-hidden="true" data-brand-symbol>P3</span><span>PERSONA<br /><strong data-brand-subtitle>PORTFOLIO</strong></span></a>
       <nav class="desktop-nav" aria-label="Main navigation">
         {nav.map(([label,href])=><a href={withBase(href!)} aria-current={path.startsWith(href!) ? 'page' : undefined}>{label}</a>)}
-        {profile.resume && <a href={withBase(profile.resume)}>Résumé <span aria-hidden="true">↗</span></a>}
+        {profile.resume && <a href={withBase(profile.resume)} data-cms-profile="resume" target="_blank" rel="noopener noreferrer">Résumé <span aria-hidden="true">↗</span></a>}
       </nav>
       <div class="header-controls">
         <div class="theme-switcher js-only" role="group" aria-label="Persona theme">
@@ -62,6 +82,7 @@ const nav=[['Projects','/projects/'],['About','/about/'],['Contact','/contact/']
             </button>
           ))}
         </div>
+        <button type="button" class="color-mode-button js-only" data-color-mode-toggle aria-pressed="false" aria-label="Color mode: dark" title="Toggle Dark Hour / Daylight mode"><span aria-hidden="true" data-color-mode-icon>☾</span> <span data-color-mode-label>DARK</span></button>
         <button type="button" class="music-button js-only" data-music-toggle aria-pressed="false" aria-label="Music: off"><span aria-hidden="true">♫</span> <span data-music-label>MUSIC OFF</span></button>
         <button type="button" class="sound-button js-only" data-sound-toggle aria-pressed="false" aria-label="Sound: off"><span class="sound-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span data-sound-label>SOUND OFF</span></button>
         <button type="button" class="settings-button js-only" data-settings-open>Settings <span aria-hidden="true">+</span></button>
@@ -69,7 +90,7 @@ const nav=[['Projects','/projects/'],['About','/about/'],['Contact','/contact/']
       </div>
       <nav id="mobile-menu" class="mobile-nav" aria-label="Mobile navigation" hidden>
         {nav.map(([label,href])=><a href={withBase(href!)} aria-current={path.startsWith(href!) ? 'page' : undefined}>{label}<span aria-hidden="true">↗</span></a>)}
-        {profile.resume && <a href={withBase(profile.resume)}>Résumé</a>}
+        {profile.resume && <a href={withBase(profile.resume)} data-cms-profile="resume" target="_blank" rel="noopener noreferrer">Résumé</a>}
         <button type="button" class="mobile-preferences" data-settings-open>Preferences <span aria-hidden="true">+</span></button>
       </nav>
       <noscript><nav class="noscript-nav" aria-label="Mobile navigation">{nav.map(([label,href])=><a href={withBase(href!)}>{label}</a>)}</nav></noscript>
@@ -77,7 +98,7 @@ const nav=[['Projects','/projects/'],['About','/about/'],['Contact','/contact/']
     <main id="main" data-route-label={section} tabindex="-1"><slot /></main>
     <footer class="site-footer">
       <svg class="footer-title" viewBox="0 0 1600 230" preserveAspectRatio="xMinYMin meet" aria-hidden="true" focusable="false"><text x="0" y="205">{section}</text></svg>
-      <div class="footer-content"><p>{profile.name}<span class="footer-divider">/</span>{profile.role}</p><div><span class="key-hint">{home || section==='Projects' ? <><kbd>↑</kbd><kbd>↓</kbd></> : <kbd>Tab</kbd>} Navigate <kbd>↵</kbd> Select</span><a href="#main">Back to top ↑</a></div></div>
+      <div class="footer-content"><p><span data-cms-profile="name">{profile.name}</span><span class="footer-divider">/</span><span data-cms-profile="role">{profile.role}</span></p><div><span class="key-hint">{home || section==='Projects' ? <><kbd>↑</kbd><kbd>↓</kbd></> : <kbd>Tab</kbd>} Navigate <kbd>↵</kbd> Select</span><a href={withBase('/admin/')} class="footer-admin-link" title="Creator-only Sanity CMS Studio">Creator CMS ↗</a><a href="#main">Back to top ↑</a></div></div>
       {profile.example && <p class="example-note">Editable example portfolio. Project concepts and profile content are illustrative.</p>}
     </footer>
     <dialog class="settings-dialog" aria-labelledby="settings-title">
@@ -87,11 +108,40 @@ const nav=[['Projects','/projects/'],['About','/about/'],['Contact','/contact/']
       <select id="persona-theme-select" data-theme-dropdown>
         {persona.themes.map(t => <option value={t.id}>{t.name} ({t.tag})</option>)}
       </select>
+      <label class="music-track-label" for="color-mode-select">Display Surface Mode (Dark / Light / System)</label>
+      <select id="color-mode-select" data-color-mode-dropdown>
+        <option value="dark">Dark Hour (Dark Mode)</option>
+        <option value="light">Daylight School (Light Mode)</option>
+        <option value="system">Follow System Preference</option>
+      </select>
       <label class="setting-row"><span><strong>Interface sounds</strong><small>Original Persona cursor, confirm and back sounds.</small></span><input type="checkbox" data-sound-input /><span class="toggle" aria-hidden="true"></span></label>
       <label class="setting-row"><span><strong>Reduce motion</strong><small>Your system preference is always respected.</small></span><input type="checkbox" data-motion-input /><span class="toggle" aria-hidden="true"></span></label>
       <label class="setting-row"><span><strong>Soundtrack</strong><small>Persona 3 Reload music. Play only when you choose.</small></span><input type="checkbox" data-music-input /><span class="toggle" aria-hidden="true"></span></label>
       <label class="music-track-label" for="soundtrack-track">Soundtrack selection</label><select id="soundtrack-track" data-music-track>{persona.tracks.map(track=><option value={withBase(track.src)}>{track.name}</option>)}</select>
-      <p class="settings-note">Theme, sound, and motion preferences stay in this browser. Music starts only after you choose Play.</p>
+
+      <details class="creator-studio-panel">
+        <summary>Creator Transition &amp; Content Editor</summary>
+        <div class="creator-studio-body">
+          <p class="creator-studio-note">Tune route transition physics live or open the authenticated <strong>Sanity CMS Studio</strong> (restricted to owner <code>@HeekoGoesMad</code>) to manage projects, texts, and cloud uploads.</p>
+          <div class="creator-grid">
+            <label for="splash-style-select">Route Splash Style</label>
+            <select id="splash-style-select" data-splash-style-select>
+              <option value="wipe">P3R Horizontal Tactical Wipe</option>
+              <option value="curtain">P4G Broadcast Vertical Curtain</option>
+              <option value="slash">P5R Phantom Diagonal Cut-In</option>
+            </select>
+            <label for="panel-duration-input">Panel / Wipe Duration (ms)</label>
+            <input id="panel-duration-input" type="number" min="80" max="1200" step="20" value="240" data-panel-duration-input />
+            <label for="page-duration-input">Page Arrival Duration (ms)</label>
+            <input id="page-duration-input" type="number" min="100" max="1500" step="20" value="280" data-page-duration-input />
+          </div>
+          <div class="creator-actions">
+            <a class="action-link creator-cms-btn" href={withBase('/admin/')}>Open Protected CMS Studio (/admin) <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </details>
+
+      <p class="settings-note">Theme, color mode, sound, and motion preferences stay in this browser. Music starts only after you choose Play.</p>
     </dialog>
     <script>import '../scripts/site';</script>
   </body>

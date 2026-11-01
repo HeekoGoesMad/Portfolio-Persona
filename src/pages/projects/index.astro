@@ -4,27 +4,115 @@ import { getProjects } from '../../lib/projects';
 import { withBase } from '../../lib/paths';
 const projects=await getProjects();
 const technologies=[...new Set(projects.flatMap(p=>p.data.technologies))].sort();
+const categories=[...new Set(projects.map(p=>p.data.category))].sort();
 const first=projects[0];
+const resolveImg = (src?: string) => {
+  if (!src) return withBase('/art/share.svg');
+  return src.startsWith('http') ? src : withBase(src);
+};
 ---
 <Layout title="Projects" section="Projects" description="A collection of web projects, interface experiments, and creative development case studies.">
   <section class="page-width projects-page" data-project-browser>
-    <div class="page-heading" data-enter><p class="eyebrow">Things made with intention</p><h1>THE PROJECT<br /><span>COLLECTION.</span></h1></div>
-    <div class="project-toolbar"><label for="technology">Filter by technology</label><select id="technology" name="tech" data-filter><option value="">All technologies</option>{technologies.map(t=><option value={t}>{t}</option>)}</select><span class="project-count" aria-live="polite" data-project-count>{projects.length} projects</span></div>
+    <div class="page-heading" data-enter><p class="eyebrow" data-cms-setting="projectsEyebrow">Things made with intention</p><h1>THE PROJECT<br /><span>COLLECTION.</span></h1></div>
+    <div class="project-toolbar">
+      <div class="category-pills js-only" role="group" aria-label="Filter by category">
+        <button type="button" class="category-pill" data-category-pill="" aria-pressed="true">All Domains</button>
+        {categories.map(cat => (
+          <button type="button" class="category-pill" data-category-pill={cat} aria-pressed="false">{cat}</button>
+        ))}
+      </div>
+      <div class="toolbar-tech-group">
+        <label for="technology">Filter by technology</label>
+        <select id="technology" name="tech" data-filter>
+          <option value="">All technologies</option>
+          {technologies.map(t=><option value={t}>{t}</option>)}
+        </select>
+      </div>
+      <span class="project-count" aria-live="polite" data-project-count>{projects.length} projects</span>
+    </div>
     <noscript><p class="inline-notice">All projects are shown. Enable JavaScript to filter or change the preview.</p></noscript>
     <div class="project-browser">
       <div class="project-list" data-key-list aria-label="Project collection">
-        {projects.map((p,i)=><article class:list={['project-row',{'is-selected':i===0}]} data-project-row data-tech={JSON.stringify(p.data.technologies)} data-project-id={p.id}>
+        {projects.map((p,i)=><article class:list={['project-row',{'is-selected':i===0}]} data-project-row data-tech={JSON.stringify(p.data.technologies)} data-category={p.data.category} data-project-id={p.id}>
           <div class="project-row-top"><span class="project-number" aria-hidden="true">{String(i+1).padStart(2,'0')}</span><span class="project-category">{p.data.category}</span>{p.data.example && <span class="example-tag">Example</span>}</div>
-          <a class="project-title-link" href={withBase(`/projects/${p.id}/`)}><h2>{p.data.title}</h2><span aria-hidden="true">↗</span></a>
-          <p>{p.data.summary}</p><div class="project-row-bottom"><span>{p.data.technologies.join(' / ')}</span><button class="preview-button js-only" type="button" data-preview={p.id} aria-label={`Preview ${p.data.title}`} aria-pressed={i===0}>Preview <span aria-hidden="true">→</span></button></div>
+          <a class="project-title-link" href={withBase(`/projects/${p.id}/`)} data-track-project={p.id}><h2>{p.data.title}</h2><span aria-hidden="true">↗</span></a>
+          <p>{p.data.summary}</p>
+          <div class="project-row-bottom">
+            <span>{p.data.technologies.join(' / ')}</span>
+            <div class="project-row-actions">
+              <button class="preview-button js-only" type="button" data-modal-open={p.id} aria-label={`Quick view ${p.data.title}`}>Quick view +</button>
+              <button class="preview-button js-only" type="button" data-preview={p.id} aria-label={`Preview ${p.data.title}`} aria-pressed={i===0}>Preview <span aria-hidden="true">→</span></button>
+            </div>
+          </div>
         </article>)}
       </div>
       <aside class="project-preview" aria-label="Selected project preview" data-enter>
-        {projects.map((p,i)=><div data-preview-panel={p.id} hidden={i!==0}><div class:list={['preview-frame',`accent-${p.data.accent}`]}><img src={withBase(p.data.thumbnail || '/art/share.svg')} alt={p.data.thumbnailAlt || 'Project concept artwork'} width="1200" height="720" loading={i===0?'eager':'lazy'} /></div><div class="preview-caption"><span>{p.data.example?'EXAMPLE CONCEPT':'PROJECT PREVIEW'}</span><span>{p.data.date.getFullYear()}</span></div><h2>{p.data.title}</h2><p>{p.data.summary}</p><a class="action-link" href={withBase(`/projects/${p.id}/`)}>Open case study <span aria-hidden="true">↗</span></a></div>)}
+        {projects.map((p,i)=><div data-preview-panel={p.id} hidden={i!==0}>
+          <div class:list={['preview-frame',`accent-${p.data.accent}`]}>
+            <img src={resolveImg(p.data.thumbnail)} alt={p.data.thumbnailAlt || 'Project concept artwork'} width="1200" height="720" loading={i===0?'eager':'lazy'} />
+          </div>
+          <div class="preview-caption"><span>{p.data.example?'EXAMPLE CONCEPT':'PROJECT PREVIEW'}</span><span>{p.data.date.getFullYear()}</span></div>
+          <h2>{p.data.title}</h2>
+          <p>{p.data.summary}</p>
+          <div class="preview-actions">
+            <a class="action-link" href={withBase(`/projects/${p.id}/`)} data-track-project={p.id}>Open case study <span aria-hidden="true">↗</span></a>
+            <button type="button" class="action-link action-link-secondary js-only" data-modal-open={p.id}>Interactive Deep-Dive <span aria-hidden="true">+</span></button>
+            {p.data.repository && <a class="text-link" href={p.data.repository} target="_blank" rel="noopener noreferrer" data-track-project={`${p.id}-repo`}>GitHub Repo ↗</a>}
+            {p.data.demo && <a class="text-link" href={p.data.demo} target="_blank" rel="noopener noreferrer" data-track-project={`${p.id}-demo`}>Live Demo ↗</a>}
+          </div>
+        </div>)}
         {!first && <p>New projects will appear here.</p>}
       </aside>
     </div>
-    <div class="empty-state" data-project-empty hidden><h2>NO MATCH. NEW POSSIBILITY.</h2><p>No projects use this technology yet.</p><a class="action-link" href={withBase('/projects/')} data-reset-filter>Show all projects ↗</a></div>
+    <div class="empty-state" data-project-empty hidden><h2>NO MATCH. NEW POSSIBILITY.</h2><p>No projects match this filter combination yet.</p><a class="action-link" href={withBase('/projects/')} data-reset-filter>Show all projects ↗</a></div>
+
+    <dialog class="project-modal" data-project-modal aria-label="Interactive project details">
+      {projects.map((p) => (
+        <div class="project-modal-sheet" data-modal-sheet={p.id} hidden>
+          <div class="dialog-heading">
+            <p class="eyebrow">{p.data.category} // {p.data.role}</p>
+            <button type="button" data-modal-close aria-label="Close project details">Close ×</button>
+          </div>
+          <h2>{p.data.title}</h2>
+          <p class="modal-summary">{p.data.summary}</p>
+          <div class="modal-tech-tags">
+            {p.data.technologies.map(t => <span class="modal-tech-badge">{t}</span>)}
+          </div>
+          {p.data.architectureOverview && (
+            <div class="modal-section">
+              <h3>Architecture Overview</h3>
+              <p>{p.data.architectureOverview}</p>
+            </div>
+          )}
+          {p.data.deliverables && p.data.deliverables.length > 0 && (
+            <div class="modal-section">
+              <h3>Key Deliverables</h3>
+              <ul class="modal-deliverables">
+                {p.data.deliverables.map(item => <li>{item}</li>)}
+              </ul>
+            </div>
+          )}
+          {p.data.gallery && p.data.gallery.length > 0 && (
+            <div class="modal-section">
+              <h3>Visual Showcase</h3>
+              <div class="modal-gallery">
+                {p.data.gallery.map(img => (
+                  <figure class="modal-gallery-item">
+                    <img src={resolveImg(img.src)} alt={img.alt} width="720" height="440" loading="lazy" />
+                    {img.caption && <figcaption>{img.caption}</figcaption>}
+                  </figure>
+                ))}
+              </div>
+            </div>
+          )}
+          <div class="modal-footer-links">
+            <a class="action-link" href={withBase(`/projects/${p.id}/`)} data-track-project={p.id}>Full Case Study <span aria-hidden="true">↗</span></a>
+            {p.data.demo && <a class="text-link" href={p.data.demo} target="_blank" rel="noopener noreferrer">Live Demo ↗</a>}
+            {p.data.repository && <a class="text-link" href={p.data.repository} target="_blank" rel="noopener noreferrer">GitHub Source ↗</a>}
+          </div>
+        </div>
+      ))}
+    </dialog>
   </section>
 </Layout>
 <script>import '../../scripts/projects';</script>

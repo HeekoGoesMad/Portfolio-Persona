@@ -1,3 +1,8 @@
+export interface SkillGroup {
+  domain: string;
+  items: string[];
+}
+
 export const profile = {
   name: 'Adrienne Lie',
   handle: 'HeekoGoesMad',
@@ -14,10 +19,30 @@ export const profile = {
     'Firebase & MongoDB',
     'UI Reverse Engineering',
   ],
+  skillGroups: [
+    {
+      domain: 'Frontend & Creative UI',
+      items: ['TypeScript', 'Next.js', 'Astro', 'React', 'Tailwind CSS', 'Kinetic Game UI'],
+    },
+    {
+      domain: 'Mobile & Native Systems',
+      items: ['Flutter', 'Dart', 'Kotlin', 'Jetpack Compose', 'Room SQLite', 'MapLibre Native'],
+    },
+    {
+      domain: 'AI, NLP & Backend',
+      items: ['Python', 'FastAPI', 'HuggingFace Transformers (RoBERTa / DeBERTa)', 'Celery & Redis', 'Firebase', 'MongoDB'],
+    },
+    {
+      domain: 'Reverse Engineering & Quality',
+      items: ['REA Static/Binary Analysis', 'Playwright E2E', 'GitHub Actions CI/CD', 'WCAG 2.1 AA Accessibility'],
+    },
+  ] as SkillGroup[],
   email: 'adriennelie190505@gmail.com',
   socials: [
     { label: 'GitHub (@HeekoGoesMad)', url: 'https://github.com/HeekoGoesMad' },
+    { label: 'LinkedIn', url: 'https://www.linkedin.com/in/adrienne-lie' },
+    { label: 'Email Direct', url: 'mailto:adriennelie190505@gmail.com' },
   ] as { label: string; url: string }[],
-  resume: '',
+  resume: '/resume.pdf',
   example: false,
 };
