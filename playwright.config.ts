@@ -9,5 +9,5 @@ export default defineConfig({
     {name:'firefox',use:{...devices['Desktop Firefox'],viewport:{width:1440,height:1000}}},
     {name:'webkit',use:{...devices['Desktop Safari'],viewport:{width:1440,height:1000}}},
   ],
-  webServer:{command:'npm run preview -- --port 4321',url:'http://127.0.0.1:4321',reuseExistingServer:true,timeout:30000},
+  webServer:{command:'npm run preview -- --port 4321 --force',url:'http://127.0.0.1:4321',reuseExistingServer:false,timeout:30000},
 });

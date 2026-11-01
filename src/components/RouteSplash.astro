@@ -1,0 +1,15 @@
+<div id="route-splash" class="route-splash" data-state="idle" aria-hidden="true" inert transition:persist="route-splash">
+  <div class="splash-label"><span class="splash-rule"></span><span data-splash-title>PORTFOLIO</span></div>
+</div>
+
+<script>import '../scripts/route-splash';</script>
+
+<style>
+  :global(::view-transition-group(*)), :global(::view-transition-old(*)), :global(::view-transition-new(*)) {animation:none!important}
+  .route-splash {position:fixed;inset:0;z-index:10000;display:grid;place-items:center;overflow:hidden;pointer-events:none;background:var(--blue-deep);color:var(--paper);contain:paint;transform:translate3d(-110%,0,0)}
+  .route-splash[data-state=idle] {visibility:hidden}
+  .splash-label {display:flex;align-items:center;gap:1rem;padding:1.5rem;font:700 clamp(1.1rem,2vw,1.5rem)/1.2 var(--display);letter-spacing:.16em}
+  .splash-rule {width:1.75rem;height:2px;background:var(--cyan);flex-shrink:0}
+  :global(html[data-motion=reduce]) .route-splash {display:none}
+  @media(prefers-reduced-motion:reduce) {.route-splash{display:none}}
+</style>

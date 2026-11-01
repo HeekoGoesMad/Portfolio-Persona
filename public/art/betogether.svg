@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#5bf3f6" stroke-width="1" stroke-opacity="0.18"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="720" fill="#0710b5"/>
+  <rect width="1200" height="720" fill="url(#grid)"/>
+  <path d="M580 0 L1200 0 L1200 720 L420 720 Z" fill="#04083a"/>
+  <path d="M555 0 L595 0 L435 720 L395 720 Z" fill="#ff386a"/>
+  <circle cx="840" cy="340" r="210" fill="none" stroke="#5bf3f6" stroke-width="3" stroke-dasharray="14 10"/>
+  <circle cx="840" cy="340" r="145" fill="#091970" stroke="#5bf3f6" stroke-width="4"/>
+  <path d="M680 390 L790 250 L870 330 L980 210" fill="none" stroke="#ff386a" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="790" cy="250" r="18" fill="#f7faf2" stroke="#ff386a" stroke-width="6"/>
+  <circle cx="870" cy="330" r="18" fill="#5bf3f6" stroke="#04083a" stroke-width="6"/>
+  <circle cx="980" cy="210" r="22" fill="#ff386a" stroke="#f7faf2" stroke-width="6"/>
+  <g fill="#f7faf2" font-family="Arial, sans-serif" font-weight="900" font-style="italic" font-size="96" letter-spacing="-5">
+    <text x="55" y="275">BE</text>
+    <text x="55" y="375" fill="#5bf3f6">TOGETHER</text>
+  </g>
+  <rect x="55" y="420" width="380" height="38" fill="#f7faf2" transform="skewX(-12)"/>
+  <text x="72" y="446" fill="#04083a" font-family="Arial, sans-serif" font-weight="800" font-size="18" letter-spacing="3">FLUTTER // LIVE SOCIAL MAP</text>
+  <text x="60" y="655" fill="#c0fafe" font-family="Arial, sans-serif" font-weight="700" font-size="18" letter-spacing="4">S.E.E.S. FIELD ARCHIVE // 01</text>
+</svg>

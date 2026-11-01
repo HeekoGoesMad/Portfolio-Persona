@@ -12,6 +12,9 @@
     "test-results"
   ],
   "compilerOptions": {
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+    "types": [
+      "@sanity/astro/module"
+    ]
   }
 }

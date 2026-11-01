@@ -1,12 +1,19 @@
 ---
 import { render } from 'astro:content';
+import { PortableText } from 'astro-portabletext';
+import CmsHeading from '../../components/CmsHeading.astro';
+import { headingId } from '../../lib/cms/project-contract';
 import Layout from '../../layouts/Layout.astro';
 import { getProjects } from '../../lib/projects';
 export async function getStaticPaths() {
   return (await getProjects()).map(project=>({params:{slug:project.id},props:{project}}));
 }
 const { project } = Astro.props;
-const { Content, headings } = await render(project);
+const localArticle = project.source === 'local' ? await render(project) : undefined;
+const Content = localArticle?.Content;
+const headings = localArticle?.headings ?? (project.source === 'sanity' ? project.body
+  .filter(block => block.style === 'h2' || block.style === 'h3')
+  .map(block => ({depth: block.style === 'h2' ? 2 : 3, slug: headingId(block), text: block.children.map(span => span.text).join('')})) : []);
 const { data }=project;
 ---
 <Layout title={data.title} section="Case study" description={data.summary}>
@@ -15,7 +22,8 @@ const { data }=project;
     <header class="case-header" data-enter><div><p class="eyebrow">{data.category} {data.example && <span class="example-tag">Example project</span>}</p><h1>{data.title}</h1><p class="case-summary">{data.summary}</p></div><dl class="project-facts"><div><dt>Role</dt><dd>{data.role}</dd></div><div><dt>Built with</dt><dd>{data.technologies.join(', ')}</dd></div><div><dt>Year</dt><dd>{data.date.getFullYear()}</dd></div></dl></header>
     {data.example && <aside class="inline-notice">Illustrative case study. This concept demonstrates the portfolio structure; it does not claim a shipped product or measured results.</aside>}
     <figure class="case-cover"><img src={data.thumbnail || '/art/share.svg'} alt={data.thumbnailAlt || 'Project concept artwork'} width="1200" height="720" fetchpriority="high" /><figcaption>Original concept artwork{data.example?' for this example project':''}.</figcaption></figure>
-    <div class="article-layout"><nav class="article-nav" aria-label="Case study sections"><p class="eyebrow">In this case study</p>{headings.filter(h=>h.depth===2).map(h=><a href={`#${h.slug}`}>{h.text}</a>)}<div class="project-external-links">{data.demo && <a href={data.demo} target="_blank" rel="noopener noreferrer">Live project ↗</a>}{data.repository && <a href={data.repository} target="_blank" rel="noopener noreferrer">Source code ↗</a>}</div></nav><div class="prose"><Content /></div></div>
+    <div class="article-layout"><nav class="article-nav" aria-label="Case study sections"><p class="eyebrow">In this case study</p>{headings.filter(h=>h.depth===2).map(h=><a href={`#${h.slug}`}>{h.text}</a>)}<div class="project-external-links">{data.demo && <a href={data.demo} target="_blank" rel="noopener noreferrer">Live project ↗</a>}{data.repository && <a href={data.repository} target="_blank" rel="noopener noreferrer">Source code ↗</a>}</div></nav><div class="prose">{Content ? <Content /> : project.source === 'sanity' && <PortableText value={project.body} components={{block: {h2: CmsHeading, h3: CmsHeading}}} />}</div></div>
     <a class="action-link case-end" href="/projects/">Back to the collection <span aria-hidden="true">↗</span></a>
   </article>
 </Layout>
+

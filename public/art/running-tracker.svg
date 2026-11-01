@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720">
+  <rect width="1200" height="720" fill="#ffe600"/>
+  <path d="M560 0 L1200 0 L1200 720 L410 720 Z" fill="#12131a"/>
+  <path d="M525 0 L565 0 L415 720 L375 720 Z" fill="#ff6b00"/>
+  <path d="M640 520 C700 490, 720 340, 790 320 C860 300, 880 410, 950 260 C990 180, 1050 200, 1100 140" fill="none" stroke="#5bf3f6" stroke-width="14" stroke-linecap="round"/>
+  <path d="M640 520 C700 490, 720 340, 790 320 C860 300, 880 410, 950 260 C990 180, 1050 200, 1100 140" fill="none" stroke="#ffe600" stroke-width="4" stroke-dasharray="10 10"/>
+  <circle cx="640" cy="520" r="18" fill="#ffe600" stroke="#12131a" stroke-width="6"/>
+  <circle cx="950" cy="260" r="18" fill="#ff386a" stroke="#f7faf2" stroke-width="6"/>
+  <circle cx="1100" cy="140" r="24" fill="#5bf3f6" stroke="#12131a" stroke-width="6"/>
+  <g fill="#12131a" font-family="Arial, sans-serif" font-weight="900" font-style="italic" font-size="96" letter-spacing="-5">
+    <text x="50" y="275">RUNNING</text>
+    <text x="50" y="375">TRACKER</text>
+  </g>
+  <rect x="50" y="420" width="390" height="38" fill="#12131a" transform="skewX(-12)"/>
+  <text x="68" y="446" fill="#ffe600" font-family="Arial, sans-serif" font-weight="800" font-size="18" letter-spacing="3">KOTLIN // JETPACK COMPOSE</text>
+  <text x="55" y="655" fill="#12131a" font-family="Arial, sans-serif" font-weight="800" font-size="18" letter-spacing="4">MIDNIGHT CHANNEL PACE // 03</text>
+</svg>

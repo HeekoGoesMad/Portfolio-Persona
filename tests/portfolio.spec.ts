@@ -12,34 +12,35 @@ test('home menu supports keyboard and route focus',async({page})=>{
   await page.keyboard.press('Enter');
   await expect(page).toHaveURL(/\/about\/$/);
   await expect(page.locator('#main')).toBeFocused();
-  await expect(page.getByRole('heading',{name:'Your name',exact:true})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'Adrienne Lie',exact:true})).toBeVisible();
   expect(errors).toEqual([]);
 });
 
 test('technology filter keeps shareable history',async({page})=>{
   await page.goto('/projects/');
-  await page.getByLabel('Filter by technology').selectOption('React');
-  await expect(page).toHaveURL(/tech=React/);
+  await page.getByLabel('Filter by technology').selectOption('Flutter');
+  await expect(page).toHaveURL(/tech=Flutter/);
   await expect(page.locator('[data-project-row]:visible')).toHaveCount(1);
   await expect(page.locator('[data-project-count]')).toHaveText('1 project');
-  await page.getByLabel('Filter by technology').selectOption('Astro');
-  await expect(page.locator('[data-project-row]:visible')).toContainText('Common Ground');
+  await page.getByLabel('Filter by technology').selectOption('FastAPI');
+  await expect(page.locator('[data-project-row]:visible')).toContainText('iSpy Analytics');
   await page.goBack();
-  await expect(page.locator('[data-project-row]:visible')).toContainText('Afterhours');
+  await expect(page.locator('[data-project-row]:visible')).toContainText('BeTogether');
   await page.goBack();
   await expect(page.locator('[data-project-row]:visible')).toHaveCount(3);
-  await page.goto('/projects/?tech=Accessibility');
-  await expect(page.locator('[data-project-row]:visible')).toHaveCount(2);
+  await page.goto('/projects/?tech=Kotlin');
+  await expect(page.locator('[data-project-row]:visible')).toHaveCount(1);
 });
 
 test('preview changes without leaving collection',async({page})=>{
   await page.goto('/projects/');
-  await page.getByRole('button',{name:'Preview Common Ground'}).click();
-  await expect(page.locator('[data-preview-panel="common-ground"]')).toBeVisible();
-  await expect(page.locator('[data-preview-panel="afterhours"]')).toBeHidden();
+  await page.getByRole('button',{name:'Preview iSpy Analytics'}).click();
+  await expect(page.locator('[data-preview-panel="ispy"]')).toBeVisible();
+  await expect(page.locator('[data-preview-panel="betogether"]')).toBeHidden();
   await expect(page).toHaveURL(/\/projects\/$/);
-  await page.locator('[data-preview-panel="common-ground"]').getByRole('link',{name:/Open case study/}).click();
-  await expect(page).toHaveURL(/\/projects\/common-ground\/$/);
+  // Activate the selected preview by keyboard so pointer travel cannot select another row.
+  await page.locator('[data-preview-panel="ispy"]').getByRole('link',{name:/Open case study/}).press('Enter');
+  await expect(page).toHaveURL(/\/projects\/ispy\/$/);
   await page.goBack();
   await expect(page.locator('[data-project-row]:visible')).toHaveCount(3);
 });
@@ -53,16 +54,29 @@ test('unknown technology has a recoverable empty state',async({page})=>{
 });
 
 test('case studies load directly and expose article anchors',async({page})=>{
-  await page.goto('/projects/afterhours/');
-  await expect(page.getByRole('heading',{name:'Afterhours',exact:true})).toBeVisible();
-  await expect(page.locator('.inline-notice')).toContainText('Illustrative case study');
-  await expect(page.getByRole('link',{name:'Live project'})).toHaveCount(0);
-  await expect(page.getByRole('link',{name:'Source code'})).toHaveCount(0);
+  await page.goto('/projects/betogether/');
+  await expect(page.getByRole('heading',{name:'BeTogether',exact:true})).toBeVisible();
+  await expect(page.getByRole('link',{name:/Source code/})).toHaveCount(1);
   await page.getByRole('navigation',{name:'Case study sections'}).getByRole('link',{name:'Building it'}).click();
   await expect(page).toHaveURL(/#building-it$/);
   await expect(page.locator('#building-it')).toBeInViewport();
   await page.reload();
   await expect(page.locator('#building-it')).toBeInViewport();
+});
+
+test('persona theme switcher toggles between P3R, P4G and P5R and persists',async({page})=>{
+  await page.goto('/');
+  await expect(page.locator('html')).toHaveAttribute('data-persona-theme','p3r');
+  await page.locator('[data-theme-select="p4g"]').click();
+  await expect(page.locator('html')).toHaveAttribute('data-persona-theme','p4g');
+  await expect(page.locator('[data-brand-symbol]')).toHaveText('P4');
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-persona-theme','p4g');
+  await page.locator('[data-theme-select="p5r"]').click();
+  await expect(page.locator('html')).toHaveAttribute('data-persona-theme','p5r');
+  await expect(page.locator('[data-brand-symbol]')).toHaveText('P5');
+  await page.locator('[data-theme-select="p3r"]').click();
+  await expect(page.locator('html')).toHaveAttribute('data-persona-theme','p3r');
 });
 
 test('preferences persist and sound stays opt-in',async({page})=>{
@@ -134,7 +148,7 @@ test('essential pages work without JavaScript',async({browser})=>{
   await page.goto('http://127.0.0.1:4321/');
   await page.getByRole('navigation',{name:'Explore the portfolio'}).getByRole('link',{name:/PROJECTS/}).click();
   await expect(page.locator('[data-project-row]')).toHaveCount(3);
-  await page.getByRole('link',{name:'Afterhours',exact:false}).first().click();
+  await page.getByRole('link',{name:'BeTogether',exact:false}).first().click();
   await expect(page.getByRole('heading',{name:'The idea',exact:true})).toBeVisible();
   await context.close();
 });
@@ -142,7 +156,7 @@ test('essential pages work without JavaScript',async({browser})=>{
 test('responsive pages have no horizontal overflow',async({page},testInfo)=>{
   for(const width of [360,768,1440]) {
     await page.setViewportSize({width,height:1000});
-    for(const route of ['/','/projects/','/projects/form-and-function/','/about/','/contact/']) {
+    for(const route of ['/','/projects/','/projects/running-tracker/','/about/','/contact/']) {
       await page.goto(route);
       await page.evaluate(()=>document.fonts.ready);
       expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`${route} at ${width}px`).toBe(true);
@@ -169,7 +183,7 @@ test('content survives 200 percent text enlargement',async({page})=>{
 
 test('pages meet automated WCAG AA rules and load without errors',async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
-  for(const route of ['/','/projects/','/projects/afterhours/','/about/','/contact/','/404.html']) {
+  for(const route of ['/','/projects/','/projects/betogether/','/about/','/contact/','/404.html']) {
     await page.goto(route);
     await page.evaluate(async()=>{await document.fonts.ready;await Promise.all(document.getAnimations().filter(a=>a.effect?.getComputedTiming().iterations!==Infinity).map(a=>a.finished.catch(()=>{})));});
     const results=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
@@ -178,10 +192,10 @@ test('pages meet automated WCAG AA rules and load without errors',async({page})=
   expect(errors).toEqual([]);
 });
 
-test('sitemap, robots and recovery route match local example state',async({request,page})=>{
+test('sitemap, robots and recovery route match published portfolio state',async({request,page})=>{
   const sitemap=await request.get('/sitemap.xml');
-  expect(sitemap.status()).toBe(200);expect(await sitemap.text()).toContain('/projects/afterhours/');
-  expect(await (await request.get('/robots.txt')).text()).toContain('Disallow: /');
+  expect(sitemap.status()).toBe(200);expect(await sitemap.text()).toContain('/projects/betogether/');
+  expect(await (await request.get('/robots.txt')).text()).toContain('Allow: /');
   await page.goto('/404.html');
   await page.getByRole('link',{name:/Find a project/}).click();
   await expect(page).toHaveURL(/\/projects\/$/);

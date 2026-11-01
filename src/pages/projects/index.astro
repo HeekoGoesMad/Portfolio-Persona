@@ -7,7 +7,7 @@ const first=projects[0];
 ---
 <Layout title="Projects" section="Projects" description="A collection of web projects, interface experiments, and creative development case studies.">
   <section class="page-width projects-page" data-project-browser>
-    <div class="page-heading" data-enter><p class="eyebrow">Things made with intention</p><h1>THE PROJECT<br /><span>COLLECTION.</span></h1><p>Experiments in how things look, feel, and work.</p></div>
+    <div class="page-heading" data-enter><p class="eyebrow">Things made with intention</p><h1>THE PROJECT<br /><span>COLLECTION.</span></h1></div>
     <div class="project-toolbar"><label for="technology">Filter by technology</label><select id="technology" name="tech" data-filter><option value="">All technologies</option>{technologies.map(t=><option value={t}>{t}</option>)}</select><span class="project-count" aria-live="polite" data-project-count>{projects.length} projects</span></div>
     <noscript><p class="inline-notice">All projects are shown. Enable JavaScript to filter or change the preview.</p></noscript>
     <div class="project-browser">

@@ -1,0 +1,10 @@
+---
+import type {BlockProps} from 'astro-portabletext/types';
+import {headingId} from '../lib/cms/project-contract';
+type Props = BlockProps;
+const {node} = Astro.props;
+const Tag = node.style === 'h3' ? 'h3' : 'h2';
+const raw = node as { _key?: string; anchor?: unknown };
+const id = headingId({_key: raw._key || 'heading', anchor: typeof raw.anchor === 'string' ? raw.anchor : undefined});
+---
+<Tag id={id}><slot /></Tag>

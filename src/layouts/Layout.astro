@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import RouteSplash from '../components/RouteSplash.astro';
 import '@fontsource/barlow-condensed/800-italic.css';
 import '@fontsource/barlow-condensed/700.css';
 import '@fontsource/dm-sans/400.css';
@@ -17,7 +18,7 @@ const canonical = configured ? new URL(path, Astro.site) : undefined;
 const nav=[['Projects','/projects/'],['About','/about/'],['Contact','/contact/']];
 ---
 <!doctype html>
-<html lang="en" data-motion="system">
+<html lang="en" data-motion="system" data-persona-theme="p3r">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -33,19 +34,33 @@ const nav=[['Projects','/projects/'],['About','/about/'],['Contact','/contact/']
     <meta property="og:image" content={new URL('/art/share.svg', Astro.site).href} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script is:inline>
-      try { if (localStorage.getItem('portfolio-motion') === 'reduce') document.documentElement.dataset.motion='reduce'; } catch {}
+      try {
+        if (localStorage.getItem('portfolio-motion') === 'reduce') document.documentElement.dataset.motion = 'reduce';
+        const savedTheme = localStorage.getItem('portfolio-persona-theme');
+        if (savedTheme === 'p3r' || savedTheme === 'p4g' || savedTheme === 'p5r') {
+          document.documentElement.dataset.personaTheme = savedTheme;
+        }
+      } catch {}
     </script>
     {section !== 'Lost signal' && <ClientRouter fallback="none" />}
   </head>
-  <body class:list={['persona-shell', { 'is-home': home }]}><div class="game-scene" aria-hidden="true" transition:persist="classroom-scene"><img src={persona.background} alt="" width="1280" height="720" /><video class="classroom-video" poster={persona.background} data-scene-video muted loop playsinline preload="none"><source src="/persona/classroom-loop.mp4" type="video/mp4" /></video><div class="game-scene-tint"></div><div class="game-water-light"></div></div><audio id="persona-music" src={persona.music} preload="none" loop aria-hidden="true" transition:persist="persona-music"></audio>
+  <body class:list={['persona-shell', { 'is-home': home }]}><div class="game-scene" aria-hidden="true" transition:persist="classroom-scene"><img src={persona.background} alt="" width="1280" height="720" /><video class="classroom-video" poster={persona.background} data-scene-video muted loop playsinline preload="none"><source src="/persona/classroom-loop.mp4" type="video/mp4" /></video><div class="game-scene-tint"></div><div class="game-water-light"></div><div class="persona-theme-overlay"></div></div><audio id="persona-music" src={persona.music} preload="none" loop aria-hidden="true" transition:persist="persona-music"></audio>
+    <RouteSplash />
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
-      <a class="brand" href="/" aria-label="Personal portfolio home"><span class="brand-symbol" aria-hidden="true">P/</span><span>PERSONAL<br /><strong>PORTFOLIO</strong></span></a>
+      <a class="brand" href="/" aria-label="Personal portfolio home"><span class="brand-symbol" aria-hidden="true" data-brand-symbol>P3</span><span>PERSONA<br /><strong data-brand-subtitle>PORTFOLIO</strong></span></a>
       <nav class="desktop-nav" aria-label="Main navigation">
         {nav.map(([label,href])=><a href={href} aria-current={path.startsWith(href!) ? 'page' : undefined}>{label}</a>)}
         {profile.resume && <a href={profile.resume}>Résumé <span aria-hidden="true">↗</span></a>}
       </nav>
       <div class="header-controls">
+        <div class="theme-switcher js-only" role="group" aria-label="Persona theme">
+          {persona.themes.map((t) => (
+            <button type="button" class="theme-pill" data-theme-select={t.id} aria-pressed={t.id === 'p3r' ? 'true' : 'false'} title={`${t.name} — ${t.subtitle}`}>
+              {t.code}
+            </button>
+          ))}
+        </div>
         <button type="button" class="music-button js-only" data-music-toggle aria-pressed="false" aria-label="Music: off"><span aria-hidden="true">♫</span> <span data-music-label>MUSIC OFF</span></button>
         <button type="button" class="sound-button js-only" data-sound-toggle aria-pressed="false" aria-label="Sound: off"><span class="sound-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span data-sound-label>SOUND OFF</span></button>
         <button type="button" class="settings-button js-only" data-settings-open>Settings <span aria-hidden="true">+</span></button>
@@ -58,7 +73,7 @@ const nav=[['Projects','/projects/'],['About','/about/'],['Contact','/contact/']
       </nav>
       <noscript><nav class="noscript-nav" aria-label="Mobile navigation">{nav.map(([label,href])=><a href={href}>{label}</a>)}</nav></noscript>
     </header>
-    <main id="main" tabindex="-1" transition:name="screen-content"><slot /></main>
+    <main id="main" data-route-label={section} tabindex="-1"><slot /></main>
     <footer class="site-footer">
       <svg class="footer-title" viewBox="0 0 1600 230" preserveAspectRatio="xMinYMin meet" aria-hidden="true" focusable="false"><text x="0" y="205">{section}</text></svg>
       <div class="footer-content"><p>{profile.name}<span class="footer-divider">/</span>{profile.role}</p><div><span class="key-hint">{home || section==='Projects' ? <><kbd>↑</kbd><kbd>↓</kbd></> : <kbd>Tab</kbd>} Navigate <kbd>↵</kbd> Select</span><a href="#main">Back to top ↑</a></div></div>
@@ -67,11 +82,15 @@ const nav=[['Projects','/projects/'],['About','/about/'],['Contact','/contact/']
     <dialog class="settings-dialog" aria-labelledby="settings-title">
       <div class="dialog-heading"><p class="eyebrow">Make yourself comfortable</p><button type="button" data-settings-close aria-label="Close settings">Close ×</button></div>
       <h2 id="settings-title">CONFIG</h2>
+      <label class="music-track-label" for="persona-theme-select">Persona UI Theme (P3R / P4G / P5R)</label>
+      <select id="persona-theme-select" data-theme-dropdown>
+        {persona.themes.map(t => <option value={t.id}>{t.name} ({t.tag})</option>)}
+      </select>
       <label class="setting-row"><span><strong>Interface sounds</strong><small>Original Persona cursor, confirm and back sounds.</small></span><input type="checkbox" data-sound-input /><span class="toggle" aria-hidden="true"></span></label>
       <label class="setting-row"><span><strong>Reduce motion</strong><small>Your system preference is always respected.</small></span><input type="checkbox" data-motion-input /><span class="toggle" aria-hidden="true"></span></label>
       <label class="setting-row"><span><strong>Soundtrack</strong><small>Persona 3 Reload music. Play only when you choose.</small></span><input type="checkbox" data-music-input /><span class="toggle" aria-hidden="true"></span></label>
       <label class="music-track-label" for="soundtrack-track">Soundtrack selection</label><select id="soundtrack-track" data-music-track>{persona.tracks.map(track=><option value={track.src}>{track.name}</option>)}</select>
-      <p class="settings-note">Sound and motion preferences stay in this browser. Music starts only after you choose Play.</p>
+      <p class="settings-note">Theme, sound, and motion preferences stay in this browser. Music starts only after you choose Play.</p>
     </dialog>
     <script>import '../scripts/site';</script>
   </body>
