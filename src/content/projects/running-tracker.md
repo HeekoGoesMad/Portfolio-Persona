@@ -25,9 +25,9 @@ gallery:
   - src: "/art/running-tracker.svg"
     alt: "Running Tracker GPS telemetry and split pace analysis screen"
     caption: "Offline-first GPS route telemetry and adaptive interval pacing."
-  - src: "/persona/artbook/aigis.jpg"
-    alt: "Precision HUD telemetry inspiration"
-    caption: "Split-second outdoor readability and kinetic HUD framing."
+  - src: "/art/running-tracker-arch.svg"
+    alt: "Running Tracker offline-first Kotlin Foreground GPS Service, Room SQLite, and Jetpack Compose architecture diagram"
+    caption: "Crash-resilient Foreground GPS Service, Room SQLite store, and deterministic adaptive coach."
 ---
 
 ## The idea

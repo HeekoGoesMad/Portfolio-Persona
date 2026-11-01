@@ -9,7 +9,27 @@ const portraitSrcset = `${withBase('/persona/protagonist-768.webp')} 768w, ${wit
   <section class="about-page page-width">
     <div class="page-heading" data-enter><p class="eyebrow" data-cms-setting="aboutEyebrow">The person behind the projects</p><h1>A LITTLE<br /><span>ABOUT ME.</span></h1></div>
     <div class="about-grid">
-      <div class="profile-art" aria-hidden="true"><img src={withBase(persona.portrait)} srcset={portraitSrcset} sizes="(max-width:767px) 90vw,42vw" alt="" width="800" height="880" data-cms-profile="portrait" /></div>
+      <div class="about-left-col">
+        <div class="profile-art" aria-hidden="true"><img src={withBase(persona.portrait)} srcset={portraitSrcset} sizes="(max-width:767px) 90vw,42vw" alt="" width="800" height="880" data-cms-profile="portrait" /></div>
+        <dl class="dossier-telemetry" aria-label="Operational telemetry summary">
+          <div class="dossier-stat">
+            <dt>SHIPPED SYSTEMS</dt>
+            <dd>03 Case Studies</dd>
+          </div>
+          <div class="dossier-stat">
+            <dt>CORE STACKS</dt>
+            <dd>Flutter · Kotlin · Next.js</dd>
+          </div>
+          <div class="dossier-stat">
+            <dt>QUALITY GATE</dt>
+            <dd>WCAG 2.1 AA + E2E</dd>
+          </div>
+          <div class="dossier-stat">
+            <dt>AVAILABILITY</dt>
+            <dd>Open to Roles &amp; Collab</dd>
+          </div>
+        </dl>
+      </div>
       <div class="about-copy">
         <p class="eyebrow" data-cms-profile="role">{profile.role}</p>
         <h2 data-cms-profile="name">{profile.name}</h2>

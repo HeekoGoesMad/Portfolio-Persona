@@ -59,6 +59,16 @@ function trackAnalyticsEvent(eventName: string, data?: Record<string, string>) {
   }
 }
 
+function cycleShoulderNav(direction: 'prev' | 'next') {
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-main-nav-link]')];
+  if (!links.length) return;
+  const currentIdx = links.findIndex(a => a.getAttribute('aria-current') === 'page');
+  const nextIdx = currentIdx < 0
+    ? (direction === 'next' ? 0 : links.length - 1)
+    : (currentIdx + (direction === 'next' ? 1 : -1) + links.length) % links.length;
+  links[nextIdx]?.click();
+}
+
 function syncPreferences() {
   if (!sound) void soundModule?.then(module => module.stopSounds());
   document.documentElement.dataset.personaTheme = personaTheme;
@@ -193,12 +203,18 @@ document.addEventListener('astro:before-swap', (event) => {
 document.addEventListener('astro:page-load', setupPage);
 systemMotion.addEventListener('change', syncPreferences);
 systemLight.addEventListener('change', syncPreferences);
+
 document.addEventListener('keydown', (event) => {
   navigationFromKeyboard = true;
   document.documentElement.dataset.input = 'keyboard';
   if (event.key === 'Escape') { closeMenu(true); void feedback('back'); return; }
   const target = event.target;
   if (!(target instanceof HTMLElement)) return;
+  const isFormField = target.matches('input, textarea, select, [contenteditable="true"]');
+  if (!isFormField && !event.metaKey && !event.ctrlKey && !event.altKey) {
+    if (event.key === '[') { event.preventDefault(); cycleShoulderNav('prev'); return; }
+    if (event.key === ']') { event.preventDefault(); cycleShoulderNav('next'); return; }
+  }
   const group = target.closest<HTMLElement>('[data-key-list]');
   if (!group || !['ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key)) return;
   const links = [...group.querySelectorAll<HTMLElement>('a[href],button')].filter(item => item.getClientRects().length > 0);
@@ -209,13 +225,20 @@ document.addEventListener('keydown', (event) => {
   links[next]?.focus();
   void feedback('select');
 });
+
 document.addEventListener('pointerdown', () => { navigationFromKeyboard = false; document.documentElement.dataset.input = 'pointer'; }, { passive: true });
+
 document.addEventListener('click', (event) => {
   const target = event.target instanceof Element ? event.target : null;
   if (!target) return;
   const tracked = target.closest<HTMLElement>('[data-track-project]');
   if (tracked?.dataset.trackProject) {
     trackAnalyticsEvent('project_click', { project: tracked.dataset.trackProject });
+  }
+  const shoulderBtn = target.closest<HTMLElement>('[data-shoulder-nav]');
+  if (shoulderBtn?.dataset.shoulderNav) {
+    cycleShoulderNav(shoulderBtn.dataset.shoulderNav === 'prev' ? 'prev' : 'next');
+    return;
   }
   const themeBtn = target.closest<HTMLElement>('[data-theme-select]');
   if (themeBtn?.dataset.themeSelect) {
@@ -245,6 +268,7 @@ document.addEventListener('click', (event) => {
   if (target.closest('a[href]')) { closeMenu(); void feedback('confirm'); }
   else if (target.closest('[data-preview],[data-project-row]')) void feedback('select');
 });
+
 document.addEventListener('change', (event) => {
   const target = event.target;
   if (target instanceof HTMLSelectElement) {
@@ -260,6 +284,15 @@ document.addEventListener('change', (event) => {
       splashStyle = validSplashStyle(target.value);
       writePreference('portfolio-splash-style', splashStyle);
       syncPreferences();
+      void feedback('page');
+      return;
+    }
+    if (target.matches('[data-music-track]')) {
+      const player = document.querySelector<HTMLAudioElement>('#persona-music');
+      if (!player) return;
+      const playing = music;
+      player.src = target.value;
+      if (playing) void toggleMusic(true);
       void feedback('page');
       return;
     }
@@ -283,12 +316,6 @@ document.addEventListener('change', (event) => {
   if (target.matches('[data-music-input]')) void toggleMusic(target.checked);
   if (target.matches('[data-motion-input]')) { reduce = target.checked; writePreference('portfolio-motion', reduce ? 'reduce' : 'system'); syncPreferences(); void feedback('select'); }
 });
-document.addEventListener('focusin', (event) => {
-  const target = event.target;
-  if (navigationFromKeyboard && target instanceof Element && target.matches('.hero-menu-link')) {
-    document.querySelectorAll('.hero-menu-link').forEach(link => link.classList.toggle('is-highlighted', link === target));
-  }
-});
 
 async function toggleMusic(value = !music) {
   const player = document.querySelector<HTMLAudioElement>('#persona-music');
@@ -302,6 +329,7 @@ async function toggleMusic(value = !music) {
   } else player.pause();
   if (request === musicRequest) syncPreferences();
 }
+
 let hovered: Element | null = null;
 let hoveredRow: Element | null = null;
 function activateMenu(target: Element) {
@@ -311,6 +339,7 @@ function activateMenu(target: Element) {
   const label = document.querySelector('[data-menu-description]');
   if (label) label.textContent = item.dataset.description || 'Choose a destination';
 }
+
 document.addEventListener('pointerover', (event) => {
   if (event.pointerType !== 'mouse' || !(event.target instanceof Element)) return;
   const item = event.target.closest('.persona-link');
@@ -318,15 +347,14 @@ document.addEventListener('pointerover', (event) => {
   const row = event.target.closest<HTMLElement>('[data-project-row]');
   if (row && row !== hoveredRow && !row.hidden) { hoveredRow = row; void feedback('select'); }
 }, { passive: true });
-document.addEventListener('focusin', (event) => { if (event.target instanceof Element) activateMenu(event.target); });
-setupPage();
 
-document.addEventListener('change', (event) => {
-  if (!(event.target instanceof HTMLSelectElement) || !event.target.matches('[data-music-track]')) return;
-  const player = document.querySelector<HTMLAudioElement>('#persona-music');
-  if (!player) return;
-  const playing = music;
-  player.src = event.target.value;
-  if (playing) void toggleMusic(true);
-  void feedback('page');
+document.addEventListener('focusin', (event) => {
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+  if (navigationFromKeyboard && target.matches('.hero-menu-link')) {
+    document.querySelectorAll('.hero-menu-link').forEach(link => link.classList.toggle('is-highlighted', link === target));
+  }
+  activateMenu(target);
 });
+
+setupPage();

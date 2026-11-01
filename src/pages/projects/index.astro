@@ -27,6 +27,7 @@ const resolveImg = (src?: string) => {
           <option value="">All technologies</option>
           {technologies.map(t=><option value={t}>{t}</option>)}
         </select>
+        <button type="button" class="clear-filter-pill js-only" data-reset-filter data-clear-filters hidden>Reset ×</button>
       </div>
       <span class="project-count" aria-live="polite" data-project-count>{projects.length} projects</span>
     </div>

@@ -26,7 +26,7 @@ const resolveImg = (src?: string) => {
     <a class="text-link back-link" href={withBase('/projects/')}>← Back to projects</a>
     <header class="case-header" data-enter><div><p class="eyebrow">{data.category} {data.example && <span class="example-tag">Example project</span>}</p><h1>{data.title}</h1><p class="case-summary">{data.summary}</p></div><dl class="project-facts"><div><dt>Role</dt><dd>{data.role}</dd></div><div><dt>Built with</dt><dd>{data.technologies.join(', ')}</dd></div><div><dt>Year</dt><dd>{data.date.getFullYear()}</dd></div></dl></header>
     {data.example && <aside class="inline-notice">Illustrative case study. This concept demonstrates the portfolio structure; it does not claim a shipped product or measured results.</aside>}
-    <figure class="case-cover"><img src={resolveImg(data.thumbnail)} alt={data.thumbnailAlt || 'Project concept artwork'} width="1200" height="720" fetchpriority="high" /><figcaption>Original concept artwork{data.example?' for this example project':''}.</figcaption></figure>
+    <figure class="case-cover"><img src={resolveImg(data.thumbnail)} alt={data.thumbnailAlt || 'Project concept artwork'} width="1200" height="720" fetchpriority="high" /><figcaption>{data.title} — Interactive UI &amp; Telemetry Preview ({data.technologies.slice(0, 4).join(' · ')})</figcaption></figure>
     <div class="article-layout">
       <nav class="article-nav" aria-label="Case study sections">
         <p class="eyebrow">In this case study</p>

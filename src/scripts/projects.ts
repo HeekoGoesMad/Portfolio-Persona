@@ -8,6 +8,7 @@ function initializeProjects() {
   const rows=[...browser.querySelectorAll<HTMLElement>('[data-project-row]')];
   const panels=[...browser.querySelectorAll<HTMLElement>('[data-preview-panel]')];
   const empty=browser.querySelector<HTMLElement>('[data-project-empty]');
+  const clearBtn=browser.querySelector<HTMLElement>('[data-clear-filters]');
   const layout=browser.querySelector<HTMLElement>('.project-browser');
   const count=browser.querySelector<HTMLElement>('[data-project-count]');
   const modal=browser.querySelector<HTMLDialogElement>('[data-project-modal]');
@@ -70,6 +71,7 @@ function initializeProjects() {
       row.hidden=!matches;return matches;
     });
     if(count) count.textContent=`${visible.length} ${visible.length===1?'project':'projects'}`;
+    if(clearBtn) clearBtn.hidden = !tech && !category;
     if(empty) empty.hidden=visible.length>0;
     if(layout) layout.hidden=visible.length===0;
     if(!visible.some(row=>row.dataset.projectId===selected)) selected='';

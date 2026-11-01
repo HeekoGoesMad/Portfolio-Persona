@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" width="1200" height="720" role="img" aria-label="BeTogether System Architecture Diagram">
+  <rect width="1200" height="720" fill="#04091e"/>
+  <g stroke="rgba(78,242,247,0.08)" stroke-width="1">
+    <line x1="0" y1="180" x2="1200" y2="180"/>
+    <line x1="0" y1="360" x2="1200" y2="360"/>
+    <line x1="0" y1="540" x2="1200" y2="540"/>
+    <line x1="300" y1="0" x2="300" y2="720"/>
+    <line x1="600" y1="0" x2="600" y2="720"/>
+    <line x1="900" y1="0" x2="900" y2="720"/>
+  </g>
+  <rect x="64" y="56" width="1072" height="56" rx="6" fill="#071033" stroke="rgba(78,242,247,0.35)"/>
+  <text x="92" y="90" fill="#4ef2f7" font-family="system-ui, sans-serif" font-size="16" font-weight="700" letter-spacing="2">SYSTEM ARCHITECTURE // BETOGETHER FLUTTER 3.44 REACTIVE PIPELINE</text>
+
+  <!-- Node 1: Flutter Client -->
+  <rect x="84" y="180" width="280" height="360" rx="8" fill="#071033" stroke="#4ef2f7" stroke-width="2"/>
+  <text x="112" y="224" fill="#4ef2f7" font-family="system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="1.5">PRESENTATION LAYER</text>
+  <text x="112" y="256" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="22" font-weight="700">Flutter 3.44 UI</text>
+  <rect x="112" y="284" width="224" height="52" rx="4" fill="#0c184a"/>
+  <text x="128" y="315" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="14" font-weight="600">OpenStreetMap Vector Canvas</text>
+  <rect x="112" y="352" width="224" height="52" rx="4" fill="#0c184a"/>
+  <text x="128" y="383" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Nearby Group Flame Radar</text>
+  <rect x="112" y="420" width="224" height="52" rx="4" fill="#0c184a"/>
+  <text x="128" y="451" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Ghost-Mode Privacy Controller</text>
+
+  <!-- Node 2: Riverpod State Graph -->
+  <rect x="460" y="180" width="280" height="360" rx="8" fill="#071033" stroke="#ff2a60" stroke-width="2"/>
+  <text x="488" y="224" fill="#ff2a60" font-family="system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="1.5">DOMAIN &amp; STATE</text>
+  <text x="488" y="256" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="22" font-weight="700">Riverpod Streams</text>
+  <rect x="488" y="284" width="224" height="52" rx="4" fill="#0c184a"/>
+  <text x="504" y="315" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Geolocation Stream Decoupler</text>
+  <rect x="488" y="352" width="224" height="52" rx="4" fill="#0c184a"/>
+  <text x="504" y="383" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Friend Cluster Aggregator</text>
+  <rect x="488" y="420" width="224" height="52" rx="4" fill="#0c184a"/>
+  <text x="504" y="451" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="14" font-weight="600">140 Widget &amp; Unit Test Suite</text>
+
+  <!-- Node 3: Cloud Sync -->
+  <rect x="836" y="180" width="280" height="360" rx="8" fill="#071033" stroke="#4ef2f7" stroke-width="2"/>
+  <text x="864" y="224" fill="#4ef2f7" font-family="system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="1.5">CLOUD INFRASTRUCTURE</text>
+  <text x="864" y="256" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="22" font-weight="700">Firebase &amp; Media</text>
+  <rect x="864" y="284" width="224" height="52" rx="4" fill="#0c184a"/>
+  <text x="880" y="315" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Cloud Firestore Real-Time Sync</text>
+  <rect x="864" y="352" width="224" height="52" rx="4" fill="#0c184a"/>
+  <text x="880" y="383" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Cloudinary WebP Story Pipeline</text>
+  <rect x="864" y="420" width="224" height="52" rx="4" fill="#0c184a"/>
+  <text x="880" y="451" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Hardened Security Rules &amp; FCM</text>
+
+  <!-- Connectors -->
+  <line x1="364" y1="360" x2="460" y2="360" stroke="#4ef2f7" stroke-width="3" stroke-dasharray="8 6"/>
+  <line x1="740" y1="360" x2="836" y2="360" stroke="#ff2a60" stroke-width="3" stroke-dasharray="8 6"/>
+</svg>

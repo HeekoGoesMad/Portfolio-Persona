@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" width="1200" height="720" role="img" aria-label="Running Tracker Offline-First Android Architecture Diagram">
+  <rect width="1200" height="720" fill="#04091e"/>
+  <g stroke="rgba(78,242,247,0.08)" stroke-width="1">
+    <line x1="0" y1="180" x2="1200" y2="180"/>
+    <line x1="0" y1="360" x2="1200" y2="360"/>
+    <line x1="0" y1="540" x2="1200" y2="540"/>
+  </g>
+  <rect x="64" y="56" width="1072" height="56" rx="6" fill="#071033" stroke="rgba(78,242,247,0.4)"/>
+  <text x="92" y="90" fill="#4ef2f7" font-family="system-ui, sans-serif" font-size="16" font-weight="700" letter-spacing="2">SYSTEM ARCHITECTURE // RUNNING TRACKER OFFLINE-FIRST KOTLIN &amp; COMPOSE</text>
+
+  <!-- Node 1: Foreground GPS Service -->
+  <rect x="84" y="180" width="280" height="360" rx="8" fill="#071033" stroke="#4ef2f7" stroke-width="2"/>
+  <text x="112" y="224" fill="#4ef2f7" font-family="system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="1.5">TELEMETRY CAPTURE</text>
+  <text x="112" y="256" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="22" font-weight="700">Foreground Service</text>
+  <rect x="112" y="284" width="224" height="52" rx="4" fill="#0c184a"/>
+  <text x="128" y="315" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Locked-Screen GPS Stream</text>
+  <rect x="112" y="352" width="224" height="52" rx="4" fill="#0c184a"/>
+  <text x="128" y="383" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Crash-Recovery Checkpoint</text>
+  <rect x="112" y="420" width="224" height="52" rx="4" fill="#0c184a"/>
+  <text x="128" y="451" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Spoken Interval Audio Cues</text>
+
+  <!-- Node 2: Local Authoritative Store & Coach -->
+  <rect x="460" y="180" width="280" height="360" rx="8" fill="#071033" stroke="#ff2a60" stroke-width="2"/>
+  <text x="488" y="224" fill="#ff2a60" font-family="system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="1.5">LOCAL PERSISTENCE &amp; AI</text>
+  <text x="488" y="256" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="22" font-weight="700">Room + Coach Engine</text>
+  <rect x="488" y="284" width="224" height="52" rx="4" fill="#0c184a"/>
+  <text x="504" y="315" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Room SQLite Route Geometry</text>
+  <rect x="488" y="352" width="224" height="52" rx="4" fill="#0c184a"/>
+  <text x="504" y="383" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Deterministic Adaptive Coach</text>
+  <rect x="488" y="420" width="224" height="52" rx="4" fill="#0c184a"/>
+  <text x="504" y="451" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Duplicate-Safe GPX &amp; ICS Sync</text>
+
+  <!-- Node 3: Jetpack Compose & MapLibre -->
+  <rect x="836" y="180" width="280" height="360" rx="8" fill="#071033" stroke="#4ef2f7" stroke-width="2"/>
+  <text x="864" y="224" fill="#4ef2f7" font-family="system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="1.5">84-SCREEN COMPOSE UI</text>
+  <text x="864" y="256" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="22" font-weight="700">Jetpack Compose</text>
+  <rect x="864" y="284" width="224" height="52" rx="4" fill="#0c184a"/>
+  <text x="880" y="315" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="14" font-weight="600">MapLibre Native Heatmaps</text>
+  <rect x="864" y="352" width="224" height="52" rx="4" fill="#0c184a"/>
+  <text x="880" y="383" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Transparent PNG Share Cards</text>
+  <rect x="864" y="420" width="224" height="52" rx="4" fill="#0c184a"/>
+  <text x="880" y="451" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Reviewable Coach Plan Diffs</text>
+
+  <line x1="364" y1="360" x2="460" y2="360" stroke="#4ef2f7" stroke-width="3" stroke-dasharray="8 6"/>
+  <line x1="740" y1="360" x2="836" y2="360" stroke="#ff2a60" stroke-width="3" stroke-dasharray="8 6"/>
+</svg>

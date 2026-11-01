@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" width="1200" height="720" role="img" aria-label="iSpy Analytics Distributed NLP Pipeline Diagram">
+  <rect width="1200" height="720" fill="#04091e"/>
+  <g stroke="rgba(78,242,247,0.08)" stroke-width="1">
+    <line x1="0" y1="180" x2="1200" y2="180"/>
+    <line x1="0" y1="360" x2="1200" y2="360"/>
+    <line x1="0" y1="540" x2="1200" y2="540"/>
+  </g>
+  <rect x="64" y="56" width="1072" height="56" rx="6" fill="#071033" stroke="rgba(255,42,96,0.45)"/>
+  <text x="92" y="90" fill="#ff2a60" font-family="system-ui, sans-serif" font-size="16" font-weight="700" letter-spacing="2">SYSTEM ARCHITECTURE // ISPY DISTRIBUTED TRANSFORMER NLP PIPELINE</text>
+
+  <!-- Stage 1 -->
+  <rect x="72" y="180" width="240" height="360" rx="8" fill="#071033" stroke="#4ef2f7" stroke-width="2"/>
+  <text x="96" y="224" fill="#4ef2f7" font-family="system-ui, sans-serif" font-size="12" font-weight="700" letter-spacing="1.5">01 // INGESTION</text>
+  <text x="96" y="256" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="20" font-weight="700">Stream Scrapers</text>
+  <rect x="96" y="288" width="192" height="54" rx="4" fill="#0c184a"/>
+  <text x="112" y="320" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Python PRAW (Reddit)</text>
+  <rect x="96" y="360" width="192" height="54" rx="4" fill="#0c184a"/>
+  <text x="112" y="392" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Playwright X/Twitter</text>
+  <rect x="96" y="432" width="192" height="54" rx="4" fill="#0c184a"/>
+  <text x="112" y="464" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Deduplication &amp; Lang Filter</text>
+
+  <!-- Stage 2 -->
+  <rect x="352" y="180" width="240" height="360" rx="8" fill="#071033" stroke="#ff2a60" stroke-width="2"/>
+  <text x="376" y="224" fill="#ff2a60" font-family="system-ui, sans-serif" font-size="12" font-weight="700" letter-spacing="1.5">02 // NLP WORKERS</text>
+  <text x="376" y="256" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="20" font-weight="700">Celery + PyTorch</text>
+  <rect x="376" y="288" width="192" height="54" rx="4" fill="#0c184a"/>
+  <text x="392" y="320" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Redis Task Broker</text>
+  <rect x="376" y="360" width="192" height="54" rx="4" fill="#0c184a"/>
+  <text x="392" y="392" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="13" font-weight="600">RoBERTa Sentiment</text>
+  <rect x="376" y="432" width="192" height="54" rx="4" fill="#0c184a"/>
+  <text x="392" y="464" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="13" font-weight="600">DeBERTa-v3 Zero-Shot</text>
+
+  <!-- Stage 3 -->
+  <rect x="632" y="180" width="240" height="360" rx="8" fill="#071033" stroke="#4ef2f7" stroke-width="2"/>
+  <text x="656" y="224" fill="#4ef2f7" font-family="system-ui, sans-serif" font-size="12" font-weight="700" letter-spacing="1.5">03 // DATA &amp; API</text>
+  <text x="656" y="256" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="20" font-weight="700">FastAPI + Motor</text>
+  <rect x="656" y="288" width="192" height="54" rx="4" fill="#0c184a"/>
+  <text x="672" y="320" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="13" font-weight="600">MongoDB Indexed Store</text>
+  <rect x="656" y="360" width="192" height="54" rx="4" fill="#0c184a"/>
+  <text x="672" y="392" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Pydantic v2 Contracts</text>
+  <rect x="656" y="432" width="192" height="54" rx="4" fill="#0c184a"/>
+  <text x="672" y="464" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Async Topic Aggregations</text>
+
+  <!-- Stage 4 -->
+  <rect x="912" y="180" width="216" height="360" rx="8" fill="#071033" stroke="#ff2a60" stroke-width="2"/>
+  <text x="936" y="224" fill="#ff2a60" font-family="system-ui, sans-serif" font-size="12" font-weight="700" letter-spacing="1.5">04 // WORKSPACE</text>
+  <text x="936" y="256" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="20" font-weight="700">Next.js 15 UI</text>
+  <rect x="936" y="288" width="168" height="54" rx="4" fill="#0c184a"/>
+  <text x="950" y="320" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Recharts Polarity</text>
+  <rect x="936" y="360" width="168" height="54" rx="4" fill="#0c184a"/>
+  <text x="950" y="392" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Stance Breakdown</text>
+  <rect x="936" y="432" width="168" height="54" rx="4" fill="#0c184a"/>
+  <text x="950" y="464" fill="#f6f8f4" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Job Telemetry HUD</text>
+
+  <line x1="312" y1="360" x2="352" y2="360" stroke="#4ef2f7" stroke-width="3"/>
+  <line x1="592" y1="360" x2="632" y2="360" stroke="#ff2a60" stroke-width="3"/>
+  <line x1="872" y1="360" x2="912" y2="360" stroke="#4ef2f7" stroke-width="3"/>
+</svg>

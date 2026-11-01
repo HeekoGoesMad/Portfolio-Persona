@@ -25,9 +25,9 @@ gallery:
   - src: "/art/betogether.svg"
     alt: "BeTogether interactive radar map and social presence clusters"
     caption: "Tactical friend radar & live OpenStreetMap presence layer."
-  - src: "/persona/artbook/yukari.jpg"
-    alt: "Stylized character UI inspiration from Persona 3 Reload"
-    caption: "High-contrast social link badges & status overlays."
+  - src: "/art/betogether-arch.svg"
+    alt: "BeTogether Flutter 3.44, Riverpod, and Firebase reactive system architecture diagram"
+    caption: "Feature-modular Flutter & Riverpod stream architecture decoupled from Cloud Firestore."
 ---
 
 ## The idea

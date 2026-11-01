@@ -25,9 +25,9 @@ gallery:
   - src: "/art/ispy.svg"
     alt: "iSpy Analytics sentiment polarity and stance breakdown visualization"
     caption: "Real-time sentiment polarity and zero-shot stance distribution."
-  - src: "/persona/artbook/mitsuru.jpg"
-    alt: "Tactical command briefing aesthetic reference"
-    caption: "Command-briefing typography and high-contrast data hierarchy."
+  - src: "/art/ispy-arch.svg"
+    alt: "iSpy Analytics distributed Celery, PyTorch RoBERTa/DeBERTa, and FastAPI architecture diagram"
+    caption: "Asynchronous scraper, Celery/Redis NLP worker, and FastAPI/MongoDB pipeline."
 ---
 
 ## The idea

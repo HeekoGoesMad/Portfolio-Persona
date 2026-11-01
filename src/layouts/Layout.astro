@@ -71,8 +71,10 @@ const nav=[['Projects','/projects/'],['About','/about/'],['Contact','/contact/']
     <header class="site-header">
       <a class="brand" href={withBase('/')} aria-label="Personal portfolio home"><span class="brand-symbol" aria-hidden="true" data-brand-symbol>P3</span><span>PERSONA<br /><strong data-brand-subtitle>PORTFOLIO</strong></span></a>
       <nav class="desktop-nav" aria-label="Main navigation">
-        {nav.map(([label,href])=><a href={withBase(href!)} aria-current={path.startsWith(href!) ? 'page' : undefined}>{label}</a>)}
+        <button type="button" class="nav-shoulder-btn js-only" data-shoulder-nav="prev" aria-label="Previous menu tab" title="Previous menu tab ([)">L</button>
+        {nav.map(([label,href])=><a href={withBase(href!)} data-main-nav-link aria-current={path.startsWith(href!) ? 'page' : undefined}>{label}</a>)}
         {profile.resume && <a href={withBase(profile.resume)} data-cms-profile="resume" target="_blank" rel="noopener noreferrer">Résumé <span aria-hidden="true">↗</span></a>}
+        <button type="button" class="nav-shoulder-btn js-only" data-shoulder-nav="next" aria-label="Next menu tab" title="Next menu tab (])">R</button>
       </nav>
       <div class="header-controls">
         <div class="theme-switcher js-only" role="group" aria-label="Persona theme">
