@@ -1,24 +1,57 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720">
-  <defs>
-    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#5bf3f6" stroke-width="1" stroke-opacity="0.18"/>
-    </pattern>
-  </defs>
-  <rect width="1200" height="720" fill="#0710b5"/>
-  <rect width="1200" height="720" fill="url(#grid)"/>
-  <path d="M580 0 L1200 0 L1200 720 L420 720 Z" fill="#04083a"/>
-  <path d="M555 0 L595 0 L435 720 L395 720 Z" fill="#ff386a"/>
-  <circle cx="840" cy="340" r="210" fill="none" stroke="#5bf3f6" stroke-width="3" stroke-dasharray="14 10"/>
-  <circle cx="840" cy="340" r="145" fill="#091970" stroke="#5bf3f6" stroke-width="4"/>
-  <path d="M680 390 L790 250 L870 330 L980 210" fill="none" stroke="#ff386a" stroke-width="8" stroke-linecap="round"/>
-  <circle cx="790" cy="250" r="18" fill="#f7faf2" stroke="#ff386a" stroke-width="6"/>
-  <circle cx="870" cy="330" r="18" fill="#5bf3f6" stroke="#04083a" stroke-width="6"/>
-  <circle cx="980" cy="210" r="22" fill="#ff386a" stroke="#f7faf2" stroke-width="6"/>
-  <g fill="#f7faf2" font-family="Arial, sans-serif" font-weight="900" font-style="italic" font-size="96" letter-spacing="-5">
-    <text x="55" y="275">BE</text>
-    <text x="55" y="375" fill="#5bf3f6">TOGETHER</text>
+  <rect width="1200" height="720" fill="#060b1d"/>
+  <!-- Clean architectural map grid -->
+  <g stroke="#1a274d" stroke-width="1">
+    <line x1="0" y1="120" x2="1200" y2="120"/>
+    <line x1="0" y1="240" x2="1200" y2="240"/>
+    <line x1="0" y1="360" x2="1200" y2="360"/>
+    <line x1="0" y1="480" x2="1200" y2="480"/>
+    <line x1="0" y1="600" x2="1200" y2="600"/>
+    <line x1="200" y1="0" x2="200" y2="720"/>
+    <line x1="400" y1="0" x2="400" y2="720"/>
+    <line x1="600" y1="0" x2="600" y2="720"/>
+    <line x1="800" y1="0" x2="800" y2="720"/>
+    <line x1="1000" y1="0" x2="1000" y2="720"/>
   </g>
-  <rect x="55" y="420" width="380" height="38" fill="#f7faf2" transform="skewX(-12)"/>
-  <text x="72" y="446" fill="#04083a" font-family="Arial, sans-serif" font-weight="800" font-size="18" letter-spacing="3">FLUTTER // LIVE SOCIAL MAP</text>
-  <text x="60" y="655" fill="#c0fafe" font-family="Arial, sans-serif" font-weight="700" font-size="18" letter-spacing="4">S.E.E.S. FIELD ARCHIVE // 01</text>
+  <!-- Stylised urban arterial roads -->
+  <path d="M -40 580 Q 320 460 580 340 T 1240 160" fill="none" stroke="#111d42" stroke-width="34"/>
+  <path d="M 320 -20 L 540 740" fill="none" stroke="#111d42" stroke-width="24"/>
+  <path d="M -40 580 Q 320 460 580 340 T 1240 160" fill="none" stroke="#243a7a" stroke-width="2"/>
+  <!-- Radar sweep rings -->
+  <circle cx="620" cy="340" r="240" fill="#38eef8" fill-opacity="0.03" stroke="#38eef8" stroke-opacity="0.22" stroke-width="1.5" stroke-dasharray="6 6"/>
+  <circle cx="620" cy="340" r="140" fill="#38eef8" fill-opacity="0.06" stroke="#38eef8" stroke-opacity="0.45" stroke-width="1.5"/>
+  <!-- Active friend route connection -->
+  <path d="M 450 430 L 620 340 L 790 250" fill="none" stroke="#38eef8" stroke-width="3" stroke-dasharray="8 6"/>
+  <!-- Friend Cluster Pin 1 -->
+  <g transform="translate(450, 430)">
+    <circle r="22" fill="#0b132b" stroke="#f4f6fb" stroke-width="3"/>
+    <circle r="7" fill="#f4f6fb"/>
+    <rect x="-54" y="30" width="108" height="26" rx="6" fill="#0b132b" stroke="#253560"/>
+    <text x="0" y="47" text-anchor="middle" fill="#f4f6fb" font-family="system-ui, sans-serif" font-size="12" font-weight="600">YUKARI · 120m</text>
+  </g>
+  <!-- Center Active User Pin (Selected White + Pink edge) -->
+  <g transform="translate(620, 340)">
+    <circle r="32" fill="#ff3366" fill-opacity="0.24"/>
+    <circle r="20" fill="#f4f6fb" stroke="#ff3366" stroke-width="4"/>
+    <circle r="6" fill="#060b1d"/>
+    <rect x="-72" y="-58" width="144" height="30" rx="6" fill="#f4f6fb"/>
+    <text x="0" y="-39" text-anchor="middle" fill="#060b1d" font-family="system-ui, sans-serif" font-size="12" font-weight="700">LIVE · 3 FRIENDS</text>
+  </g>
+  <!-- Friend Cluster Pin 2 -->
+  <g transform="translate(790, 250)">
+    <circle r="22" fill="#0b132b" stroke="#38eef8" stroke-width="3"/>
+    <circle r="7" fill="#38eef8"/>
+    <rect x="-54" y="30" width="108" height="26" rx="6" fill="#0b132b" stroke="#253560"/>
+    <text x="0" y="47" text-anchor="middle" fill="#38eef8" font-family="system-ui, sans-serif" font-size="12" font-weight="600">JUNPEI · 240m</text>
+  </g>
+  <!-- Top HUD bar inside device preview -->
+  <rect x="48" y="40" width="340" height="56" rx="8" fill="#0b132b" stroke="#1e2d56"/>
+  <circle cx="76" cy="68" r="6" fill="#38eef8"/>
+  <text x="94" y="64" fill="#f4f6fb" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Iwatodai Station Sector</text>
+  <text x="94" y="82" fill="#8b9bc0" font-family="system-ui, sans-serif" font-size="12">OpenStreetMap · Riverpod Stream · 28ms</text>
+  <!-- Bottom Story dock -->
+  <rect x="380" y="612" width="440" height="64" rx="12" fill="#0b132b" stroke="#1e2d56"/>
+  <text x="412" y="649" fill="#f4f6fb" font-family="system-ui, sans-serif" font-size="13" font-weight="500">Ghost Mode: Off</text>
+  <rect x="668" y="628" width="132" height="32" rx="6" fill="#38eef8"/>
+  <text x="734" y="649" text-anchor="middle" fill="#060b1d" font-family="system-ui, sans-serif" font-size="12" font-weight="700">SHARE STORY</text>
 </svg>
