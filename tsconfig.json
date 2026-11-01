@@ -9,7 +9,8 @@
     "node_modules",
     "reports",
     "playwright-report",
-    "test-results"
+    "test-results",
+    "studio-portfolio-persona"
   ],
   "compilerOptions": {
     "noUncheckedIndexedAccess": true,
